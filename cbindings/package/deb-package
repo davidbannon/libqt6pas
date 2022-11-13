@@ -1,0 +1,183 @@
+#!/bin/bash
+
+# Ugly script to package the libqt6pas library for debian.
+# Note : 
+#	* Based on Lazarus trunk version, its 6.2.3 for now. 
+
+#	David Bannon, LGPL with exception, see associated COPYING.TXT 
+#	package names look like this (qt5 eg) -
+
+# intel	libqt5pas1_2.10-0_amd64.deb  		dest = /usr/lib/x86_64-linux-gnu
+#	libqt5pas-dev_2.10-0_arm64.deb 
+
+# arm64	libqt5pas-dev_2.10-0_amd64.deb 		dest = 
+# 	libqt5pas1_2.10-0_arm64.deb 
+
+# arm32	libqt5pas1_2.10-0_armhf.deb 		dest = /usr/lib/arm-linux-gnueabihf
+#	libqt5pas-dev_2.10-0_armhf.deb    
+
+LIBNAME=libQt6Pas
+
+if [ -f "../version" ]; then
+	VERSION=`cat ../version`
+	MAJORVER=`echo $VERSION | awk -F"." '{ printf $1 }'`		# for 6.1.0,  MAJORVER=6
+	MINORVER=`echo $VERSION | awk -F"." '{ printf $2 }'`	# for 1.2.8,  MINORVER=2
+	EXTRAVER=`echo $VERSION | awk -F"." '{ printf $3 }'`	# for 1.2.8,  MINORVER=8
+else
+	# library will be called somethin like ./libQt6Pas.so.6.2.3
+	CWD=`pwd`
+	cd ..
+	LIBFILE=$(find . ! -type l -name "$LIBNAME""*")
+	cd $CWD
+	MAJORVER=`echo $LIBFILE | awk -F"." '{ printf $4 }'`
+	MINORVER=`echo $LIBFILE | awk -F"." '{ printf $5 }'`
+	EXTRAVER=`echo $LIBFILE | awk -F"." '{ printf $6 }'`
+	VERSION="$MAJORVER"."$MINORVER"."$EXTRAVER"
+fi
+echo "Name=""$LIBFILE"", Maj=""$MAJORVER"", Minor=""$MINORVER"", extra=""$EXTRAVER"
+# ToDo : really should have some sanity checks here
+
+
+PACKVER='0'		# rev this if you re-package same binary
+PACKVER='1'
+
+PRODUCT="libqt6pas"	# note lib has upper case letters, this appears in Package name
+
+ARCH=unknown		# we will set further down. amd64  arm64 and armhf, note: arm64 aka aarch64 ? 
+DIR_ARCH=`uname -m`	# Might return, eg aarch64, x86_64. Raspi running 32bit returns armv7l - possibly RasPi version specific ?
+
+VER1=`echo $VERSION | awk -F"." '{ printf $1 }'`		# ie "2"
+VER2=`echo $VERSION | awk -F"." '{ printf $1"."$2 }'`		# ie "2.8"
+#VER3=`echo $VERSION | awk -F"." '{ printf $2"."$3 }'`
+
+WHOAMI="David Bannon <tomboy-ng@bannons.id.au>"
+BUILDDATE=`date -R`
+
+function WriteControl () {
+	if [ "$1" = "DEV" ]; then
+		echo "Package: $PRODUCT-dev" >> BUILD/DEBIAN/control			
+	else
+		echo "Package: $PRODUCT$MAJORVER" >> BUILD/DEBIAN/control
+		# Next line should mention the source package name we don't have one yet.
+		# https://www.debian.org/doc/debian-policy/ch-controlfields.html#source
+		# echo "Source: CHANGE-ME" >> BUILD/DEBIAN/control
+	fi
+	echo "Version: $MINORVER"."$EXTRAVER" >> BUILD/DEBIAN/control
+	echo "Architecture: ""$ARCH" >> BUILD/DEBIAN/control
+	echo "Maintainer: $WHOAMI" >> BUILD/DEBIAN/control
+	echo "Priority: optional" >> BUILD/DEBIAN/control
+	echo "Multi-Arch: same" >> BUILD/DEBIAN/control
+	echo "Homepage: https://wiki.freepascal.org/Qt6_Interface" >> BUILD/DEBIAN/control
+	# ----- I am not sure if the following is a good idea or not, no, better without, as is replaces old ver, might get new version next
+	# echo "Replaces: libqt5pas1" >> BUILD/DEBIAN/control
+
+
+	SIZE_IN_KB="$(du -s BUILD | awk '{print $1;}')"
+	echo "Installed-Size: ${SIZE_IN_KB}" >> BUILD/DEBIAN/control
+
+	if [ "$1" = "DEV" ]; then
+		# echo "Installed-Size: 1445" >> BUILD/DEBIAN/control
+		echo "Depends: $PRODUCT$MAJORVER (>= $MINORVER"."$EXTRAVER)" >> BUILD/DEBIAN/control
+		echo "Section: libdevel" >> BUILD/DEBIAN/control
+		echo "Description: Development files for Qt6Pas" >> BUILD/DEBIAN/control
+	else
+
+		# echo "Installed-Size: 3314" >> BUILD/DEBIAN/control
+		echo "Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libqt6core6 (>= 6.2.3), libqt6gui6 (>= 6.2.3), libqt6printsupport6 (>= 6.2.3), libqt6widgets6 (>= 6.2.3), libstdc++6 (>= 5)" >> BUILD/DEBIAN/control
+		echo "Section: libs" >> BUILD/DEBIAN/control
+		echo "Description: Qt6 interface bindings for Pascal" >> BUILD/DEBIAN/control
+	fi
+	echo " Provides interface for Pascal applications, is only" >> BUILD/DEBIAN/control
+	echo " a temp hack until distro versions catch up. It is" >> BUILD/DEBIAN/control
+	echo " only really useful, at present, to people using"   >> BUILD/DEBIAN/control
+	echo " Lazarus main, current release versions do not need it." >> BUILD/DEBIAN/control
+}
+
+
+function DebianPackage () {
+	# We build a debian tree in BUILD and call dpkg-deb -b 
+	rm -rf BUILD
+	mkdir -p BUILD/DEBIAN
+	mkdir -p BUILD/usr/lib/"$DIR_ARCH"
+	mkdir -p BUILD/usr/share/doc/"$PRODUCT$MAJORVER"
+	WriteControl
+	cp ../libQt6Pas.so."$VERSION" BUILD/usr/lib/"$DIR_ARCH"/libQt6Pas.so."$VERSION"
+	ln -s -r BUILD/usr/lib/"$DIR_ARCH"/"$LIBNAME".so."$VERSION" BUILD/usr/lib/"$DIR_ARCH"/libQt6Pas.so."$MAJORVER"."$MINORVER"
+	ln -s -r BUILD/usr/lib/"$DIR_ARCH"/"$LIBNAME".so."$VERSION" BUILD/usr/lib/"$DIR_ARCH"/libQt6Pas.so."$MAJORVER"
+	# Don't link to base name, Lintian objects 'cos thats the -dev package's job
+
+	chmod 0644 BUILD/usr/lib/"$DIR_ARCH"/*
+	
+    	cp copyright "BUILD/usr/share/doc/$PRODUCT$MAJORVER/copyright"
+	
+	echo "activate-noawait ldconfig" > BUILD/DEBIAN/triggers
+	echo "libQt6Pas $MAJORVER libqt6pas$MAJORVER" > BUILD/DEBIAN/shlibs
+	gzip -knc --best changelog.libqt6pas >> BUILD/usr/share/doc/"$PRODUCT$MAJORVER"/changelog.gz
+	# ------ Make the md5sum file -----------
+	cd BUILD
+	md5sum  usr/lib/"$DIR_ARCH"/"$LIBNAME".so."$VERSION" > DEBIAN/md5sums
+	md5sum  usr/share/doc/"$PRODUCT$MAJORVER"/copyright >> DEBIAN/md5sums
+	md5sum  usr/share/doc/"$PRODUCT$MAJORVER"/changelog.gz >> DEBIAN/md5sums
+	cd ..
+	chmod -R g-w BUILD
+  	fakeroot dpkg-deb -b BUILD/. "$PRODUCT$MAJORVER"_"$MINORVER"_"$EXTRAVER"-"$PACKVER"_"$ARCH".deb
+}
+
+function DebianPackageDev () {
+	# We build a debian tree in BUILD and call dpkg-deb -b 
+	rm -rf BUILD
+	mkdir -p BUILD/DEBIAN
+	mkdir -p BUILD/usr/lib/"$DIR_ARCH"
+	mkdir -p BUILD/usr/share/pascal/qt6
+	mkdir -p BUILD/usr/share/doc/"$PRODUCT"-dev
+	WriteControl DEV
+	ln -s -r BUILD/usr/lib/"$DIR_ARCH"/"$LIBNAME".so."$VERSION" BUILD/usr/lib/"$DIR_ARCH"/"$LIBNAME".so
+	cp ../qt6.pas BUILD/usr/share/pascal/qt6/.
+	cp ../qt62.pas BUILD/usr/share/pascal/qt6/.
+	chmod 0644 BUILD/usr/share/pascal/qt6/*
+    	cp copyright BUILD/usr/share/doc/"$PRODUCT-dev"/copyright
+	gzip -knc --best changelog.libqt6pas >> BUILD/usr/share/doc/"$PRODUCT-dev"/changelog.gz
+ 
+	# ------ Make the md5sum file -----------
+	cd BUILD
+	md5sum  "usr/share/pascal/qt6/qt6.pas" > DEBIAN/md5sums
+	md5sum  "usr/share/pascal/qt6/qt62.pas" >> DEBIAN/md5sums
+	md5sum  usr/share/doc/"$PRODUCT"-dev/copyright >> DEBIAN/md5sums
+	md5sum  usr/share/doc/"$PRODUCT"-dev/changelog.gz >> DEBIAN/md5sums
+	cd ..
+	chmod -R g-w BUILD
+  	fakeroot dpkg-deb -b BUILD/. "$PRODUCT"-dev_"$MINORVER"_"$EXTRAVER"-"$PACKVER"_"$ARCH".deb
+}
+
+if [ "$DIR_ARCH" == "aarch64" ]; then
+	ARCH="arm64"			# Name used in deb file name
+	DIR_ARCH="aarch64-linux-gnu"	# Dir where the libraries end up
+fi
+if [ "$DIR_ARCH" == "armv7l" ]; then
+	ARCH="armhf"
+	DIR_ARCH="arm-linux-gnueabihf"
+fi
+if [ "$DIR_ARCH" == "x86_64" ]; then
+	ARCH="amd64"
+	DIR_ARCH="x86_64-linux-gnu"
+fi
+if [ "$ARCH" == "unknown" ]; then
+	echo "ERROR cannot id your arch $DIR_ARCH, exiting..."
+	exit
+fi
+
+echo "Building for $ARCH $DIR_ARCH - Maj=""$MAJORVER"", Min=""$MINORVER"", EXTRA=""$EXTRAVER"
+
+strip --remove-section=.comment ../libQt6Pas.so."$VERSION"
+
+DebianPackage 
+DebianPackageDev
+
+ls -ltr
+
+lintian -IiE *.deb
+
+echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
+
+
+
