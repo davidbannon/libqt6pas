@@ -17,24 +17,24 @@
 #	libqt5pas-dev_2.10-0_armhf.deb    
 
 LIBNAME=libQt6Pas
+CURRENT=`pwd`
 
 if [ -f "../version" ]; then
 	VERSION=`cat ../version`
-	MAJORVER=`echo $VERSION | awk -F"." '{ printf $1 }'`		# for 6.1.0,  MAJORVER=6
+	MAJORVER=`echo $VERSION | awk -F"." '{ printf $1 }'`	# for 6.1.0,  MAJORVER=6
 	MINORVER=`echo $VERSION | awk -F"." '{ printf $2 }'`	# for 1.2.8,  MINORVER=2
 	EXTRAVER=`echo $VERSION | awk -F"." '{ printf $3 }'`	# for 1.2.8,  MINORVER=8
 else
-	# library will be called somethin like ./libQt6Pas.so.6.2.3
-	CWD=`pwd`
+	# library will be called something like ./libQt6Pas.so.6.2.3
 	cd ..
-	LIBFILE=$(find . ! -type l -name "$LIBNAME""*")
-	cd $CWD
+	LIBFILE=$(find . -maxdepth 1 ! -type l  -name "$LIBNAME""*")
+	cd $CURRENT
 	MAJORVER=`echo $LIBFILE | awk -F"." '{ printf $4 }'`
 	MINORVER=`echo $LIBFILE | awk -F"." '{ printf $5 }'`
 	EXTRAVER=`echo $LIBFILE | awk -F"." '{ printf $6 }'`
 	VERSION="$MAJORVER"."$MINORVER"."$EXTRAVER"
 fi
-echo "Name=""$LIBFILE"", Maj=""$MAJORVER"", Minor=""$MINORVER"", extra=""$EXTRAVER"
+# echo "Name=""$LIBFILE"", Maj=""$MAJORVER"", Minor=""$MINORVER"", extra=""$EXTRAVER"
 # ToDo : really should have some sanity checks here
 
 
@@ -44,7 +44,8 @@ PACKVER='1'
 PRODUCT="libqt6pas"	# note lib has upper case letters, this appears in Package name
 
 ARCH=unknown		# we will set further down. amd64  arm64 and armhf, note: arm64 aka aarch64 ? 
-DIR_ARCH=`uname -m`	# Might return, eg aarch64, x86_64. Raspi running 32bit returns armv7l - possibly RasPi version specific ?
+DIR_ARCH=unknown
+M_ARCH=`uname -m`	# Might return, eg aarch64, x86_64. Raspi running 32bit returns armv7l - possibly RasPi version specific ?
 
 VER1=`echo $VERSION | awk -F"." '{ printf $1 }'`		# ie "2"
 VER2=`echo $VERSION | awk -F"." '{ printf $1"."$2 }'`		# ie "2.8"
@@ -149,15 +150,43 @@ function DebianPackageDev () {
   	fakeroot dpkg-deb -b BUILD/. "$PRODUCT"-dev_"$MINORVER"_"$EXTRAVER"-"$PACKVER"_"$ARCH".deb
 }
 
-if [ "$DIR_ARCH" == "aarch64" ]; then
+# A lot more work is required for this to work even on non amd64 hardware.
+# Paricularly where the library is suposed to end up !
+#
+function MakeRPM () {
+	FULLVER="$1"_"$2"_"$3"-"$PACKVER"
+        RDIR="$PRODUCT$1-$MINORVER"."$EXTRAVER"
+        echo "=== Making RPM from $PRODUCT""$FULLVER"_"$ARCH.deb ==="
+        rm -Rf "$RDIR"
+        fakeroot alien -r -g -v "$PRODUCT""$FULLVER"_"$ARCH"".deb"
+        # Alien inserts requests the package create /, /usr/lib and /usr/bin and
+        # the os does not apprieciate that, not surprisingly.
+	cp "$RDIR"/"$RDIR"-2.spec ../../before.spec
+        fakeroot sed -i 's#%dir "/"##' "$RDIR"/"$RDIR"-2.spec
+        fakeroot sed -i 's#%dir "/usr/bin/"##' "$RDIR"/"$RDIR"-2.spec
+        fakeroot sed -i 's#%dir "/usr/lib/"##' "$RDIR"/"$RDIR"-2.spec
+	# The debs want the library in /usr/lib/x86_64-linux-gnu but Fedora
+	# expects them to go to /usr/lib64 - further, junk the making of /usr/lib64 !
+	fakeroot sed -i 's/lib\/x86_64-linux-gnu/lib64/g' "$RDIR"/"$RDIR"-2.spec
+        fakeroot sed -i 's#%dir "/usr/lib64/"##' "$RDIR"/"$RDIR"-2.spec
+	cp "$RDIR"/"$RDIR"-2.spec ../../after.spec
+	cd "$RDIR"
+	mv usr/lib/"$DIR_ARCH" usr/lib64
+	# ToDo : above line has hardwired in RPM destination, wonder where they should be ?
+	fakeroot rpmbuild --target "$M_ARCH" --buildroot "$CURRENT"/"$RDIR" -bb "$RDIR"-2.spec
+        cd ..
+}
+
+
+if [ "$M_ARCH" == "aarch64" ]; then
 	ARCH="arm64"			# Name used in deb file name
 	DIR_ARCH="aarch64-linux-gnu"	# Dir where the libraries end up
 fi
-if [ "$DIR_ARCH" == "armv7l" ]; then
+if [ "$M_ARCH" == "armv7l" ]; then
 	ARCH="armhf"
 	DIR_ARCH="arm-linux-gnueabihf"
 fi
-if [ "$DIR_ARCH" == "x86_64" ]; then
+if [ "$M_ARCH" == "x86_64" ]; then
 	ARCH="amd64"
 	DIR_ARCH="x86_64-linux-gnu"
 fi
@@ -166,18 +195,21 @@ if [ "$ARCH" == "unknown" ]; then
 	exit
 fi
 
-echo "Building for $ARCH $DIR_ARCH - Maj=""$MAJORVER"", Min=""$MINORVER"", EXTRA=""$EXTRAVER"
+echo "Building for $ARCH to go into $DIR_ARCH - Maj=""$MAJORVER"", Min=""$MINORVER"", EXTRA=""$EXTRAVER"
 
 strip --remove-section=.comment ../libQt6Pas.so."$VERSION"
 
 DebianPackage 
 DebianPackageDev
+echo " ====== Finished Building Debs ======="
+MakeRPM "$MAJORVER" "$MINORVER" "$EXTRAVER"  
+MakeRPM "-dev" "$MINORVER" "$EXTRAVER"       
 
 ls -ltr
 
 lintian -IiE *.deb
 
-echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
+#echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
 
 
 
