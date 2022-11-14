@@ -17,7 +17,7 @@ README
 
 
 
-Download packaged libraries (Debs and RPMs) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
+Download packaged libraries (Debs, RPMs and tarball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 
 

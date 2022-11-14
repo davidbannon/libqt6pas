@@ -206,6 +206,11 @@ echo " ====== Finished Building Debs ======="
 MakeRPM "$MAJORVER" "$MINORVER" "$EXTRAVER"  
 MakeRPM "-dev" "$MINORVER" "$EXTRAVER"       
 
+TARNAME=libqt6pas_"$MAJORVER"_"$MINORVER"_"$EXTRAVER"_"$ARCH"
+mkdir "$TARNAME"
+cp ../targz.readme "$TARNAME"/.
+cp ../libQt6Pas.so."$VERSION" "$TARNAME"/.
+tar czf "$TARNAME".tar.gz "$TARNAME"
 ls -ltr
 
 lintian -IiE *.deb

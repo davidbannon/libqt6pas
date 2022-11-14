@@ -11,7 +11,7 @@
 <bold>Please Note :</bold> you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
 
 
-Download packaged libraries (Debs and RPMs) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
+Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 Its possible libraries pacman and for arm and arm64 will appear in the not too distant future.
 
@@ -50,14 +50,14 @@ cd package
 
 
 </note-content></text>
-  <last-change-date>2022-11-14T11:47:42.1689413+11:00</last-change-date>
-  <last-metadata-change-date>2022-11-14T11:47:42.1689413+11:00</last-metadata-change-date>
+  <last-change-date>2022-11-14T12:38:06.9133524+11:00</last-change-date>
+  <last-metadata-change-date>2022-11-14T12:38:06.9133524+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
   <width>1000</width>
   <height>626</height>
-  <x>559</x>
-  <y>78</y>
+  <x>74</x>
+  <y>46</y>
   <open-on-startup>False</open-on-startup>
 </note>
