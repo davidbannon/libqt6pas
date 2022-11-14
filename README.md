@@ -15,10 +15,6 @@ README
 
 
 
-**WARNING - sorry, I have messed this up. The -0 build libraries have been buit against Qt6.3.2 and will not support earlier versions of QT, such as the Qt6.2 series.  I am currently building another release, its built on Ubuntu 22.0LTS using Qt6.2.4. A couple of hours, no more...**
-
-
-
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 
