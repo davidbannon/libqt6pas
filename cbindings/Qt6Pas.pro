@@ -10,13 +10,15 @@
 
 
 
-# Binding Release Version 6.2.3.1 against Qt6 6.2 LTS release.
+# Binding Release Version 6.2.0 against Qt6 6.2 LTS release.
+# Changes to Binding will trigger updates to the third component in version number
+# So, next one will be 6.2.1
 
-win32:VERSION = 6.2.3.0
-else:VERSION = 6.2.3
+win32:VERSION = 6.2.0.0
+else:VERSION = 6.2.0
 VER_MAJ = 6
 VER_MIN = 2
-VER_PAT = 3
+VER_PAT = 0
 win32:VERSION_PE_HEADER = 6.2
 
 QT += gui printsupport
@@ -25,8 +27,7 @@ TEMPLATE = lib
 VPATH = src
 MOC_DIR = tmp
 OBJECTS_DIR = tmp
-QMAKE_CXXFLAGS += -Wfatal-errors 
-QMAKE_CXXFLAGS += -std=c++17
+QMAKE_CXXFLAGS += -Wfatal-errors
 
 # Match Intel x86_64 i686 i586 i386 x86 ...
 is86 = $$find(QMAKE_HOST.arch, ".*86")
@@ -86,7 +87,9 @@ CONFIG -= link_prl
 CONFIG += release
 CONFIG += dll
 CONFIG += warn_off
-  
+
+CONFIG += c++1z
+
 message("Pascal Qt Interface for binding platform:" $$PLATFORM)
 DEFINES += $$PLATFORM   
 message("Install location:" $$target.path)

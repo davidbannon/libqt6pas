@@ -16,6 +16,9 @@
 # arm32	libqt5pas1_2.10-0_armhf.deb 		dest = /usr/lib/arm-linux-gnueabihf
 #	libqt5pas-dev_2.10-0_armhf.deb    
 
+
+PACKVER='0'		# rev this if you re-package same binary
+
 LIBNAME=libQt6Pas
 CURRENT=`pwd`
 
@@ -38,8 +41,6 @@ fi
 # ToDo : really should have some sanity checks here
 
 
-PACKVER='0'		# rev this if you re-package same binary
-PACKVER='1'
 
 PRODUCT="libqt6pas"	# note lib has upper case letters, this appears in Package name
 
