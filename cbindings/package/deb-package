@@ -17,7 +17,7 @@
 #	libqt5pas-dev_2.10-0_armhf.deb    
 
 
-PACKVER='0'		# rev this if you re-package same binary
+PACKVER='1'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 CURRENT=`pwd`
@@ -160,6 +160,9 @@ function MakeRPM () {
         echo "=== Making RPM from $PRODUCT""$FULLVER"_"$ARCH.deb ==="
         rm -Rf "$RDIR"
         fakeroot alien -r -g -v "$PRODUCT""$FULLVER"_"$ARCH"".deb"
+	# Force the same package number as the debs have
+	# Use "" so shell expands $PACKVAR, the ',*' matches anything after there
+	fakeroot sed -i "s/^Release:.*/Release: ${PACKVER}/" "$RDIR"/"$RDIR"-2.spec
         # Alien inserts requests the package create /, /usr/lib and /usr/bin and
         # the os does not apprieciate that, not surprisingly.
 	# cp "$RDIR"/"$RDIR"-2.spec ../../before.spec
