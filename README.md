@@ -69,11 +69,17 @@ Note that in the early release stages of this library, its version number was 6.
 
 **Building this Library**
 --------
-**For example, on a November 2022 Debian Testing box.**
+**For example, on an Ubuntu 20.04 box.**
 
-sudo apt install qt6-base-dev c++ alien rpm lintian  // bit over 400Meg
+**Note :** I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else.
 
-cd cbindings
+
+
+sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+
+wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
+
+cd libqt6pas/cbindings
 
 qmake6 -query   // just to have a look
 
@@ -83,7 +89,15 @@ make     // build the library, slow !
 
 cd package
 
-./deb-package   // Make debs and RPMs
+// if its a repackage of same code, edit PACKVER in script
+
+./deb-package   // Make debs, RPMs and tarball
+
+
+
+
+
+**ToDo** : Set the RPM package number. more sed work on spec file !
 
 
 

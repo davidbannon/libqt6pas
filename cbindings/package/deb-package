@@ -162,7 +162,7 @@ function MakeRPM () {
         fakeroot alien -r -g -v "$PRODUCT""$FULLVER"_"$ARCH"".deb"
         # Alien inserts requests the package create /, /usr/lib and /usr/bin and
         # the os does not apprieciate that, not surprisingly.
-	cp "$RDIR"/"$RDIR"-2.spec ../../before.spec
+	# cp "$RDIR"/"$RDIR"-2.spec ../../before.spec
         fakeroot sed -i 's#%dir "/"##' "$RDIR"/"$RDIR"-2.spec
         fakeroot sed -i 's#%dir "/usr/bin/"##' "$RDIR"/"$RDIR"-2.spec
         fakeroot sed -i 's#%dir "/usr/lib/"##' "$RDIR"/"$RDIR"-2.spec
@@ -170,7 +170,7 @@ function MakeRPM () {
 	# expects them to go to /usr/lib64 - further, junk the making of /usr/lib64 !
 	fakeroot sed -i 's/lib\/x86_64-linux-gnu/lib64/g' "$RDIR"/"$RDIR"-2.spec
         fakeroot sed -i 's#%dir "/usr/lib64/"##' "$RDIR"/"$RDIR"-2.spec
-	cp "$RDIR"/"$RDIR"-2.spec ../../after.spec
+	# cp "$RDIR"/"$RDIR"-2.spec ../../after.spec
 	cd "$RDIR"
 	mv usr/lib/"$DIR_ARCH" usr/lib64
 	# ToDo : above line has hardwired in RPM destination, wonder where they should be ?
@@ -206,11 +206,14 @@ echo " ====== Finished Building Debs ======="
 MakeRPM "$MAJORVER" "$MINORVER" "$EXTRAVER"  
 MakeRPM "-dev" "$MINORVER" "$EXTRAVER"       
 
-TARNAME=libqt6pas_"$MAJORVER"_"$MINORVER"_"$EXTRAVER"_"$ARCH"
+TARNAME=libqt6pas_"$MAJORVER"_"$MINORVER"_"$EXTRAVER"-"$PACKVER"_"$ARCH"
+rm -Rf "$TARNAME"
 mkdir "$TARNAME"
 cp ../targz.readme "$TARNAME"/.
 cp ../libQt6Pas.so."$VERSION" "$TARNAME"/.
 tar czf "$TARNAME".tar.gz "$TARNAME"
+rm -Rf "$TARNAME"
+rm -Rf BUILD
 ls -ltr
 
 lintian -IiE *.deb

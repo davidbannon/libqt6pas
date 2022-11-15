@@ -37,26 +37,33 @@ The library itself, is called <monospace>libQt6Pas.so.6.2.0</monospace>, note th
 Note that in the early release stages of this library, its version number was 6.2.3 (reflecting the exact release it was first built on). That was wrong, you should remove and discard that package. It number conflicts ....
 
 <size:large><bold>Building this Library</bold></size:large>
-<bold>For example, on a November 2022 Debian Testing box.</bold>
-sudo apt install qt6-base-dev c++ alien rpm lintian  // bit over 400Meg
-cd cbindings
+<bold>For example, on an Ubuntu 20.04 box.</bold>
+<bold>Note :</bold> I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else.
+
+sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
+cd libqt6pas/cbindings
 qmake6 -query   // just to have a look
 qmake6   // to build the Makefile
 make     // build the library, slow !
 cd package
-./deb-package   // Make debs and RPMs
+// if its a repackage of same code, edit PACKVER in script
+./deb-package   // Make debs, RPMs and tarball
+
+
+<bold>ToDo</bold> : Set the RPM package number. more sed work on spec file !
 
 
 
 </note-content></text>
-  <last-change-date>2022-11-15T10:56:39.4292459+11:00</last-change-date>
-  <last-metadata-change-date>2022-11-15T10:56:39.4292459+11:00</last-metadata-change-date>
+  <last-change-date>2022-11-15T11:41:14.9738950+11:00</last-change-date>
+  <last-metadata-change-date>2022-11-15T11:41:14.9738950+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
   <width>1000</width>
   <height>626</height>
-  <x>74</x>
-  <y>46</y>
+  <x>342</x>
+  <y>111</y>
   <open-on-startup>False</open-on-startup>
 </note>
