@@ -1,0 +1,78 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build push events (debug mode)
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+on:
+  pull_request:
+  push:
+    paths-ignore:
+    - "README.md"
+    branches:
+      - master
+      - releases/*
+  workflow_dispatch:
+        
+env:
+  SOURCE: 'libQt6Pas_src'
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    
+    runs-on: ${{ matrix.config.os }}
+    
+    defaults:
+      run:
+        shell: bash 
+        
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os: ubuntu-22.04
+            name: 'Linux 64'
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+      with:
+        path: '${{ env.SOURCE }}'
+        
+    - name: Install Dependencies
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      run: |
+        sudo apt-get -m -y install qt6-base-dev build-essential libgl1-mesa-dev alien rpm lintian
+         
+    - name: Check QT version (only 6.2.*)
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      run: |
+        qmake6 -query | grep "QT_VERSION:6\.2" > qt_version.txt;
+        if ! [ -s qt_version.txt ]; then 
+          exit 1
+        fi
+
+    - name: Building libQt6Pas
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      run: |
+        cd ${{ env.SOURCE }}/cbindings
+        qmake6
+        make
+
+    - name: Make packages
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      run: |
+        cd ${{ env.SOURCE }}/cbindings/package
+        ./deb-package
+
+    - name: Upload the Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: libQt6Pas
+        path: |
+          ${{ env.SOURCE }}/qt_version.txt
+          ${{ env.SOURCE }}/cbindings/libQt6Pas.so*
+          ${{ env.SOURCE }}/cbindings/package/libqt6pas*
