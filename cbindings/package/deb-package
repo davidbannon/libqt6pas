@@ -17,7 +17,7 @@
 #	libqt5pas-dev_2.10-0_armhf.deb    
 
 
-PACKVER='1'		# should start at '1', rev if you re-package same binary
+PACKVER='3'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 CURRENT=`pwd`
@@ -85,7 +85,7 @@ function WriteControl () {
 	else
 
 		# echo "Installed-Size: 3314" >> BUILD/DEBIAN/control
-		echo "Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libqt6core6 (>= 6.2.3), libqt6gui6 (>= 6.2.3), libqt6printsupport6 (>= 6.2.3), libqt6widgets6 (>= 6.2.3), libstdc++6 (>= 5)" >> BUILD/DEBIAN/control
+		echo "Depends: libc6 (>= 2.34), libgcc1 (>= 11.3), libqt6core6 (>= 6.2.3), libqt6gui6 (>= 6.2.3), libqt6printsupport6 (>= 6.2.3), libqt6widgets6 (>= 6.2.3), libstdc++6 (>= 5)" >> BUILD/DEBIAN/control
 		echo "Section: libs" >> BUILD/DEBIAN/control
 		echo "Description: Qt6 interface bindings for Pascal" >> BUILD/DEBIAN/control
 	fi

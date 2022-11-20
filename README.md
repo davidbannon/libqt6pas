@@ -19,6 +19,10 @@ Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://
 
 
 
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
+
+
+
 Its possible libraries pacman and for arm and arm64 will appear in the not too distant future.
 
 
@@ -49,13 +53,13 @@ Bug reports relating to this repository's **packaging or currency** should be re
 
 The main library Deb package looks a bit like this - `libqt6pas6_2_0-0_amd64.deb`
 
-* The package name is   libqt6pas
+   * The package name is   libqt6pas
 
-* The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
+   * The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
 
-* The "_0" will indicate later release of the bindings, still with Qt6.2
+   * The "_0" will indicate later release of the bindings, still with Qt6.2
 
-* The "-0" is the usual debian packaging release, I'll increment that if I release new packages with same library.
+   * The "-3" is the usual debian packaging release, I'll increment that if I release new packages with same library. Yeah, '3', I am not doing well !
 
 
 
@@ -67,37 +71,50 @@ Note that in the early release stages of this library, its version number was 6.
 
 
 
+**Repackaging**
+--------
+OK, we are now on the third packaging of the same library. All to do with version numbers and issues relating to building the library in the correct Linux Distro. Note, it does not matter which distro you **use** it in (as long as its new enough), but it must be **built** on, eg, Fedora 35 (my problem, not yours!).
+
+
+
+
+
 **Building this Library**
 --------
 **For example, on an Ubuntu 20.04 box.**
 
-**Note :** I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else.
+**Note :** I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else. However, I soon found that was wrong (thanks bogan85) !  There are still some Linux Distros, under support, with Qt6 that predate U2204. So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
 
 
-
-sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
 
 wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
 
-cd libqt6pas/cbindings
+// unzip the above somewhere
 
-qmake6 -query   // just to have a look
+    cd libqt6pas-master/cbindings
+    qmake6 -query   // just to have a look
+    qmake6   // to build the Makefile
+    make     // build the library, slow !
 
-qmake6   // to build the Makefile
 
-make     // build the library, slow !
-
-cd package
-
-// if its a repackage of same code, edit PACKVER in script
-
-./deb-package   // Make debs, RPMs and tarball
+Then copy the resulting library back somewhere where it can be used on build the debs, for me that my U2204m VM.
 
 
 
+    sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+    // cd to the libqt6pas git controlled directory
+    cd libqt6pas-master/cbindings/package
+    // if its a repackage of same code, edit PACKVER in script
+    ./deb-package   // Make debs, RPMs and tarball
 
 
-**ToDo** : Set the RPM package number. more sed work on spec file !
+Upload the packages, do the git stuff !
+
+
+
+
+
+
 
 
 

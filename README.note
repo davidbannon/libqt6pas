@@ -12,6 +12,8 @@
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
+
 Its possible libraries pacman and for arm and arm64 will appear in the not too distant future.
 
 libqt6pas is an interface between Lazarus and the Qt5 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
@@ -27,37 +29,48 @@ Bug reports relating to this repository's <bold>packaging or currency</bold> sho
 <size:large><bold>Names and Numbers</bold></size:large>
 
 The main library Deb package looks a bit like this - <monospace>libqt6pas6_2_0-0_amd64.deb</monospace>
-<list><list-item dir="ltr">The package name is   libqt6pas</list-item></list>
-<list><list-item dir="ltr">The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.</list-item></list>
-<list><list-item dir="ltr">The "_0" will indicate later release of the bindings, still with Qt6.2</list-item></list>
-<list><list-item dir="ltr">The "-0" is the usual debian packaging release, I'll increment that if I release new packages with same library.</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The package name is   libqt6pas</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The "_0" will indicate later release of the bindings, still with Qt6.2</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The "-3" is the usual debian packaging release, I'll increment that if I release new packages with same library. Yeah, '3', I am not doing well !</list-item></list></list-item></list>
 
 The library itself, is called <monospace>libQt6Pas.so.6.2.0</monospace>, note the upper case letters, its a Qt thing apparently. It will normally have symlinks from libQt6Pas.so.6.2 and  libQt6Pas.so.6. If you have the -dev package installed, it will add a symlink from libQt6Pas.so
 
 Note that in the early release stages of this library, its version number was 6.2.3 (reflecting the exact release it was first built on). That was wrong, you should remove and discard that package. It number conflicts ....
 
+<size:large><bold>Repackaging</bold></size:large>
+OK, we are now on the third packaging of the same library. All to do with version numbers and issues relating to building the library in the correct Linux Distro. Note, it does not matter which distro you <bold>use</bold> it in (as long as its new enough), but it must be <bold>built</bold> on, eg, Fedora 35 (my problem, not yours!).
+
+
 <size:large><bold>Building this Library</bold></size:large>
 <bold>For example, on an Ubuntu 20.04 box.</bold>
-<bold>Note :</bold> I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else.
+<bold>Note :</bold> I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else. However, I soon found that was wrong (thanks bogan85) !  There are still some Linux Distros, under support, with Qt6 that predate U2204. So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
 
-sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
 wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
-cd libqt6pas/cbindings
-qmake6 -query   // just to have a look
-qmake6   // to build the Makefile
-make     // build the library, slow !
-cd package
-// if its a repackage of same code, edit PACKVER in script
-./deb-package   // Make debs, RPMs and tarball
+// unzip the above somewhere
+<monospace>cd libqt6pas-master/cbindings</monospace>
+<monospace>qmake6 -query   // just to have a look</monospace>
+<monospace>qmake6   // to build the Makefile</monospace>
+<monospace>make     // build the library, slow !</monospace>
+
+Then copy the resulting library back somewhere where it can be used on build the debs, for me that my U2204m VM.
+
+<monospace>sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg</monospace>
+<monospace>// cd to the libqt6pas git controlled directory</monospace>
+<monospace>cd libqt6pas-master/cbindings/package</monospace>
+<monospace>// if its a repackage of same code, edit PACKVER in script</monospace>
+<monospace>./deb-package   // Make debs, RPMs and tarball</monospace>
+
+Upload the packages, do the git stuff !
 
 
-<bold>ToDo</bold> : Set the RPM package number. more sed work on spec file !
+
 
 
 
 </note-content></text>
-  <last-change-date>2022-11-15T11:41:14.9738950+11:00</last-change-date>
-  <last-metadata-change-date>2022-11-15T11:41:14.9738950+11:00</last-metadata-change-date>
+  <last-change-date>2022-11-20T21:11:45.4973030+11:00</last-change-date>
+  <last-metadata-change-date>2022-11-20T21:11:45.4973030+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
