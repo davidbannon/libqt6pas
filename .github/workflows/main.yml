@@ -31,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: ubuntu-22.04
+          - os: ubuntu-20.04
             name: 'Linux 64'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -43,12 +43,14 @@ jobs:
         path: '${{ env.SOURCE }}'
         
     - name: Install Dependencies
-      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-20.04')
       run: |
+        sudo add-apt-repository ppa:okirby/qt6-backports
+        sudo apt update
         sudo apt-get -m -y install qt6-base-dev build-essential libgl1-mesa-dev alien rpm lintian
          
     - name: Check QT version (only 6.2.*)
-      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-20.04')
       run: |
         qmake6 -query | grep "QT_VERSION:6\.2" > qt_version.txt;
         if ! [ -s qt_version.txt ]; then 
@@ -56,14 +58,14 @@ jobs:
         fi
 
     - name: Building libQt6Pas
-      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-20.04')
       run: |
         cd ${{ env.SOURCE }}/cbindings
         qmake6
         make -j8
 
     - name: Make packages
-      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-22.04')
+      if: (matrix.config.os == 'ubuntu-latest' || matrix.config.os == 'ubuntu-20.04')
       run: |
         cd ${{ env.SOURCE }}/cbindings/package
         ./deb-package
