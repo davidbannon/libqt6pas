@@ -43,8 +43,12 @@ OK, we are now on the third packaging of the same library. All to do with versio
 
 
 <size:large><bold>Building this Library</bold></size:large>
-<bold>For example, on an Ubuntu 20.04 box.</bold>
-<bold>Note :</bold> I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else. However, I soon found that was wrong (thanks bogan85) !  There are still some Linux Distros, under support, with Qt6 that predate U2204. So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
+Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
+<list><list-item dir="ltr"><list><list-item dir="ltr">Fedora 35 has the older Qt6 6.2.3 that the interface is based on. If built on a later Qt6, then the earlier end user systems will not be supported.</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The box where its packaged needs to be a deb based one, but not a newer eg Ubuntu because Ubuntu now has a dpkg that uses zstd compression and Debian's dpkg cannot read that.</list-item></list></list-item></list>
+
+<bold>The Build  - Fedora 35</bold>
+ So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
 
 wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
 // unzip the above somewhere
@@ -55,10 +59,14 @@ wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
 
 Then copy the resulting library back somewhere where it can be used on build the debs, for me that my U2204m VM.
 
-<monospace>sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg</monospace>
-<monospace>// cd to the libqt6pas git controlled directory</monospace>
+<bold>The Package - Ubuntu 20.04</bold>
+
+<monospace>Setup - sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg</monospace>
+<monospace>Setup - a git controlled repo from github.com/davidbannon/libqt6pas</monospace>
+
+<monospace>cp &lt;The newly built library&gt; libqt6pas-master/cbindings/.</monospace>
 <monospace>cd libqt6pas-master/cbindings/package</monospace>
-<monospace>// if its a repackage of same code, edit PACKVER in script</monospace>
+<monospace>// edit PACKVER in script, '1' if new release, inc if repackage</monospace>
 <monospace>./deb-package   // Make debs, RPMs and tarball</monospace>
 
 Upload the packages, do the git stuff !
@@ -69,14 +77,14 @@ Upload the packages, do the git stuff !
 
 
 </note-content></text>
-  <last-change-date>2022-11-20T21:11:45.4973030+11:00</last-change-date>
-  <last-metadata-change-date>2022-11-20T21:11:45.4973030+11:00</last-metadata-change-date>
+  <last-change-date>2022-11-22T11:34:21.8282155+11:00</last-change-date>
+  <last-metadata-change-date>2022-11-22T11:34:21.8282155+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
   <width>1000</width>
   <height>626</height>
-  <x>342</x>
-  <y>111</y>
+  <x>204</x>
+  <y>45</y>
   <open-on-startup>False</open-on-startup>
 </note>

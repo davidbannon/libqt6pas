@@ -81,9 +81,17 @@ OK, we are now on the third packaging of the same library. All to do with versio
 
 **Building this Library**
 --------
-**For example, on an Ubuntu 20.04 box.**
+Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
 
-**Note :** I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else. However, I soon found that was wrong (thanks bogan85) !  There are still some Linux Distros, under support, with Qt6 that predate U2204. So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
+   * Fedora 35 has the older Qt6 6.2.3 that the interface is based on. If built on a later Qt6, then the earlier end user systems will not be supported.
+
+   * The box where its packaged needs to be a deb based one, but not a newer eg Ubuntu because Ubuntu now has a dpkg that uses zstd compression and Debian's dpkg cannot read that.
+
+
+
+**The Build  - Fedora 35**
+
+ So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
 
 
 
@@ -101,10 +109,17 @@ Then copy the resulting library back somewhere where it can be used on build the
 
 
 
-    sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
-    // cd to the libqt6pas git controlled directory
+**The Package - Ubuntu 20.04**
+
+
+
+    Setup - sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+    Setup - a git controlled repo from github.com/davidbannon/libqt6pas
+
+
+    cp <The newly built library> libqt6pas-master/cbindings/.
     cd libqt6pas-master/cbindings/package
-    // if its a repackage of same code, edit PACKVER in script
+    // edit PACKVER in script, '1' if new release, inc if repackage
     ./deb-package   // Make debs, RPMs and tarball
 
 
