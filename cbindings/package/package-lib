@@ -1,9 +1,9 @@
 #!/bin/bash
 # 
 # WARNING - script under development.
-#           Building RPMs with use of alien
-#           Works for main library but not yet -dev one but useful proof of concept
-#	    Resonable rpmlint result. rpmling is not as mature as lintian !
+#           Building RPMs without use of alien
+#           Works, needs testing, needs work for non amd64 packages
+#	    Resonable rpmlint result. rpmlint is not as mature as lintian !
 #
 #	    David Bannon 2022-11-23
 # NAMING
@@ -23,15 +23,10 @@
 # 	The '0' in above will be rev'ed by every change Z makes to the interface, the 6.2 is the LTS Qt6 release
 
 
-#	David Bannon, LGPL with exception, see associated COPYING.TXT 
-#	package names look like this (qt5 eg) -
-
-
 PACKVER='1'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 PRODUCT="libqt6pas6"	# note lib has upper case letters, this appears in Package name, two sixes but gets another 
-FULLLIBNAME="$LIBNAME".so."$VERSION"
 CURRENT=`pwd`
 
 	# library will be called something like ./libQt6Pas.so.6.2.3, the package libqt6pas6_6.2.0-1_amd64.deb and libqt6pas6-dev.6.2.0-1_amd64
@@ -45,6 +40,7 @@ CURRENT=`pwd`
 # echo "Name=""$LIBFILE"", Maj=""$MAJORVER"", Minor=""$MINORVER"", extra=""$EXTRAVER"
 # ToDo : really should have some sanity checks here
 
+FULLLIBNAME="$LIBNAME".so."$VERSION"
 
 
 
@@ -68,7 +64,7 @@ function WriteControl () {
 		# https://www.debian.org/doc/debian-policy/ch-controlfields.html#source
 		# echo "Source: CHANGE-ME" >> BUILD/DEBIAN/control
 	fi
-	echo "Version: $MINORVER"."$EXTRAVER" >> BUILD/DEBIAN/control
+	echo "Version: ""$MAJORVER"."$MINORVER"."$EXTRAVER" >> BUILD/DEBIAN/control
 	echo "Architecture: ""$ARCH" >> BUILD/DEBIAN/control
 	echo "Maintainer: $WHOAMI" >> BUILD/DEBIAN/control
 	echo "Priority: optional" >> BUILD/DEBIAN/control
@@ -126,7 +122,7 @@ function DebianPackage () {
 	md5sum  usr/share/doc/"$PRODUCT$MAJORVER"/changelog.gz >> DEBIAN/md5sums
 	cd ..
 	chmod -R g-w BUILD
-  	fakeroot dpkg-deb -b BUILD/. "$PRODUCT$MAJORVER"_"$MINORVER"."$EXTRAVER"-"$PACKVER"_"$ARCH".deb
+  	fakeroot dpkg-deb -b BUILD/. "$PRODUCT"_"$MAJORVER"."$MINORVER"."$EXTRAVER"-"$PACKVER"_"$ARCH".deb
 }
 
 function DebianPackageDev () {
@@ -165,20 +161,28 @@ function MakeRPM () {
 	PARTVER="$MAJORVER"."$MINORVER"."$EXTRAVER"
 	FULLVER="$PARTVER"-"$PACKVER"
         RDIR="$PRODUCT"-"$MAJORVER"."$MINORVER"."$EXTRAVER"
-        echo "=== Making RPM from $PRODUCT""$FULLVER"_"$ARCH.deb in $RDIR ==="
+        echo "=== Making RPM from $PRODUCT"."$FULLVER"_"$ARCH.deb in $RDIR ==="
         rm -Rf "$RDIR"
-	mkdir -p "$RDIR"/usr/share/doc/"$PRODUCT""$1"
-	chmod 755 "$RDIR"/usr/share/doc/"$PRODUCT""$1"
-	mkdir "$RDIR"/usr/"$RDIR_ARCH"
-    	cp copyright "$RDIR/usr/share/doc/"$PRODUCT""$1"/copyright"
-	$gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT$1"/changelog.gz
+	mkdir -p "$RDIR"/usr/"$RDIR_ARCH"
+	chmod 744 "$RDIR"/usr/"$RDIR_ARCH"
+	# mkdir -p "$RDIR"/usr/lib
 	if [ "$1" = "-devel" ]; then		# DEV Package
+		echo "========= RPM Devel Package ========"
+		mkdir -p "$RDIR"/usr/share/doc/"$PRODUCT""$1"
+		chmod 755 "$RDIR"/usr/share/doc/"$PRODUCT""$1"
+    		cp copyright "$RDIR"/usr/share/doc/"$PRODUCT""$1"/copyright
+		gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT""$1"/changelog.gz
 		ln -s "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so
     		cp ../qt6.pas "$RDIR/usr/share/doc/"$PRODUCT""$1"/."
     		cp ../qt62.pas "$RDIR/usr/share/doc/"$PRODUCT""$1"/."
 		cp libqt6pas-devel.spec "$RDIR"/"$PRODUCT".spec
 		sed -i "s/INSERT_DEPEND/${PRODUCT} = ${PARTVER}/" "$RDIR"/"$PRODUCT".spec
 	else	
+		echo "========= RPM Lib Package =========="
+		mkdir -p "$RDIR"/usr/share/doc/"$PRODUCT"
+		chmod 755 "$RDIR"/usr/share/doc/"$PRODUCT"
+    		cp copyright "$RDIR/usr/share/doc/"$PRODUCT"/copyright"
+		gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT"/changelog.gz
 		cp ../"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/.
 		ln -s -r "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so."$MAJORVER"."$MINORVER"
 		ln -s -r "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so."$MAJORVER"
@@ -187,7 +191,7 @@ function MakeRPM () {
 	sed -i "s/^Version:*./Version: ${PARTVER}/" "$RDIR"/"$PRODUCT".spec
 	sed -i "s/^Release:*./Release: ${PACKVER}/" "$RDIR"/"$PRODUCT".spec
 	sed -i "s/INSERT_FULL_VER/Version: ${FULLVER}/" "$RDIR"/"$PRODUCT".spec
-	cp "$RDIR"/"$PRODUCT".spec "$PRODUCT".spec-just-used
+	cp "$RDIR"/"$PRODUCT".spec "$PRODUCT""$1".spec-just-used
 	cd "$RDIR"
 	fakeroot rpmbuild --target "$M_ARCH" --buildroot "$CURRENT"/"$RDIR" -bb "$PRODUCT".spec
 	cd .. 
@@ -258,4 +262,8 @@ ls -ltr
 
 # libqt6pas6.x86_64: E: no-signature
 #    As near as I can tell, only OpenSUSE seems to care about signitures.
-                                                                                                        
+                
+# libqt6pas6.x86_64: E: non-versioned-file-in-library-package /usr/lib/.build-id
+#    Dont blame me ! rpm puts the bloody file here !
+
+
