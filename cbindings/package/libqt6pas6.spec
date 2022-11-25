@@ -7,6 +7,7 @@ License: see /usr/share/doc/libqt6pas6/copyright
 Packager: David Bannon <tomboy-ng@bannons.id.au>
 URL: https://github.com/davidbannon/libqt6pas
 
+%define _build_id_links none
 
 %define _rpmdir ../
 %define _rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
@@ -15,7 +16,7 @@ URL: https://github.com/davidbannon/libqt6pas
 %description
 
 Provides interface for Pascal applications, is only
-a temp hack until distro versions catch up. It is
+a temp hack until the distributions catch up. It is
 only really useful, at present, to people using
 Lazarus main, current release versions do not need it.
 
@@ -25,7 +26,6 @@ Lazarus main, current release versions do not need it.
 /usr/%{_lib}/libQt6Pas.so.6.2.2
 /usr/%{_lib}/libQt6Pas.so.6.2
 /usr/lib64/libQt6Pas.so.6
-# %dir /usr/%{_lib}
 %dir "/usr/share/doc/libqt6pas6/"
 "/usr/share/doc/libqt6pas6/changelog.gz"
 "/usr/share/doc/libqt6pas6/copyright"
