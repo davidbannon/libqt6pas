@@ -15,6 +15,10 @@ README
 
 
 
+**NOTE : If you have libraries installed earlier than November 25, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.**
+
+
+
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 
@@ -51,15 +55,19 @@ Bug reports relating to this repository's **packaging or currency** should be re
 --------
 
 
-The main library Deb package looks a bit like this - `libqt6pas6_2_0-0_amd64.deb`
+The main library Deb package looks a bit like this - `libqt6pas6_6.2.0-1_amd64.deb and libqt6pas6-dev_6.2.0-1_amd64.deb`
 
-   * The package name is   libqt6pas
+   * The package name is   libqt6pas6
 
    * The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
 
    * The "_0" will indicate later release of the bindings, still with Qt6.2
 
-   * The "-3" is the usual debian packaging release, I'll increment that if I release new packages with same library. Yeah, '3', I am not doing well !
+The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
+
+
+
+Note that, in this format, which conforms to the way Debian is packaging Qt6, the '6' appears three times, each refering to the same thing ! I have moved over to this format instead of the one intially used here as I found the earlier one was much harder to get error free rpms. The change of formatting will require, the user, to remove ones in the old format before installing the new format. Sorry.
 
 
 
@@ -120,7 +128,7 @@ Then copy the resulting library back somewhere where it can be used on build the
     cp <The newly built library> libqt6pas-master/cbindings/.
     cd libqt6pas-master/cbindings/package
     // edit PACKVER in script, '1' if new release, inc if repackage
-    ./deb-package   // Make debs, RPMs and tarball
+    ./package-lib   // Make debs, RPMs and tarball
 
 
 Upload the packages, do the git stuff !

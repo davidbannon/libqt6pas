@@ -10,6 +10,8 @@
 
 <bold>Please Note :</bold> you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
 
+<bold>NOTE : If you have libraries installed earlier than November 25, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.</bold>
+
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
@@ -28,11 +30,13 @@ Bug reports relating to this repository's <bold>packaging or currency</bold> sho
 
 <size:large><bold>Names and Numbers</bold></size:large>
 
-The main library Deb package looks a bit like this - <monospace>libqt6pas6_2_0-0_amd64.deb</monospace>
-<list><list-item dir="ltr"><list><list-item dir="ltr">The package name is   libqt6pas</list-item></list></list-item></list>
+The main library Deb package looks a bit like this - <monospace>libqt6pas6_6.2.0-1_amd64.deb and libqt6pas6-dev_6.2.0-1_amd64.deb</monospace>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The package name is   libqt6pas6</list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.</list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">The "_0" will indicate later release of the bindings, still with Qt6.2</list-item></list></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr">The "-3" is the usual debian packaging release, I'll increment that if I release new packages with same library. Yeah, '3', I am not doing well !</list-item></list></list-item></list>
+The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
+
+Note that, in this format, which conforms to the way Debian is packaging Qt6, the '6' appears three times, each refering to the same thing ! I have moved over to this format instead of the one intially used here as I found the earlier one was much harder to get error free rpms. The change of formatting will require, the user, to remove ones in the old format before installing the new format. Sorry.
 
 The library itself, is called <monospace>libQt6Pas.so.6.2.0</monospace>, note the upper case letters, its a Qt thing apparently. It will normally have symlinks from libQt6Pas.so.6.2 and  libQt6Pas.so.6. If you have the -dev package installed, it will add a symlink from libQt6Pas.so
 
@@ -67,7 +71,7 @@ Then copy the resulting library back somewhere where it can be used on build the
 <monospace>cp &lt;The newly built library&gt; libqt6pas-master/cbindings/.</monospace>
 <monospace>cd libqt6pas-master/cbindings/package</monospace>
 <monospace>// edit PACKVER in script, '1' if new release, inc if repackage</monospace>
-<monospace>./deb-package   // Make debs, RPMs and tarball</monospace>
+<monospace>./package-lib   // Make debs, RPMs and tarball</monospace>
 
 Upload the packages, do the git stuff !
 
@@ -77,8 +81,8 @@ Upload the packages, do the git stuff !
 
 
 </note-content></text>
-  <last-change-date>2022-11-22T11:34:21.8282155+11:00</last-change-date>
-  <last-metadata-change-date>2022-11-22T11:34:21.8282155+11:00</last-metadata-change-date>
+  <last-change-date>2022-11-25T16:14:36.9003720+11:00</last-change-date>
+  <last-metadata-change-date>2022-11-25T16:14:36.9003720+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>

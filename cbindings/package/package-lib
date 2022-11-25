@@ -1,11 +1,11 @@
 #!/bin/bash
 # 
-# WARNING - script under development.
-#           Building RPMs without use of alien
-#           Works, needs testing, needs work for non amd64 packages
-#	    Resonable rpmlint result. rpmlint is not as mature as lintian !
+# A script to package the pre-built libqt6pas library into debs, rpms and a tarball
+# 	New - rpms and now not build with alien and are also a much higher quality.
+#       Tested on, so far, on a amd64 box, there will be issues on arm
+#	Resonable lintian and rpmlint result. See end of script !
 #
-#	    David Bannon 2022-11-23
+#	    David Bannon 2022-11-25
 # NAMING
 #	Hard to be sure, no clear definition and varying conventions in use but -
 #	ftp.debian.org/debian/pool/main/q/qt6-base - typical...
@@ -23,7 +23,7 @@
 # 	The '0' in above will be rev'ed by every change Z makes to the interface, the 6.2 is the LTS Qt6 release
 
 
-PACKVER='1'		# should start at '1', rev if you re-package same binary
+PACKVER='2'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 PRODUCT="libqt6pas6"	# note lib has upper case letters, this appears in Package name, two sixes but gets another 
