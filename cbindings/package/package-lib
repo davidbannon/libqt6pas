@@ -179,6 +179,7 @@ function MakeRPM () {
     		cp copyright "$RDIR/usr/share/doc/"$PRODUCT"/copyright"
 		gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT"/changelog.gz
 		cp ../"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/.
+		chmod 755 "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME"
 		ln -s -r "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so."$MAJORVER"."$MINORVER"
 		ln -s -r "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so."$MAJORVER"
 		cp libqt6pas6.spec "$RDIR"/"$PRODUCT".spec

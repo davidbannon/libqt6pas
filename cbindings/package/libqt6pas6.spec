@@ -25,7 +25,7 @@ Lazarus main, current release versions do not need it.
 
 /usr/%{_lib}/libQt6Pas.so.6.2.2
 /usr/%{_lib}/libQt6Pas.so.6.2
-/usr/lib64/libQt6Pas.so.6
+/usr/%{_lib}/libQt6Pas.so.6
 %dir "/usr/share/doc/libqt6pas6/"
 "/usr/share/doc/libqt6pas6/changelog.gz"
 "/usr/share/doc/libqt6pas6/copyright"
