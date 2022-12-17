@@ -5554,6 +5554,10 @@ function QGuiApplication_isSavingSession(handle: QGuiApplicationH): Boolean; cde
 function QGuiApplication_applicationState(): QtApplicationState; cdecl; external Qt6PasLib name 'QGuiApplication_applicationState';
 function QGuiApplication_highDpiScaleFactorRoundingPolicy(): QtHighDpiScaleFactorRoundingPolicy; cdecl; external Qt6PasLib name 'QGuiApplication_highDpiScaleFactorRoundingPolicy';
 procedure QGuiApplication_setHighDpiScaleFactorRoundingPolicy(const policy: QtHighDpiScaleFactorRoundingPolicy); cdecl; external Qt6PasLib name 'QGuiApplication_setHighDpiScaleFactorRoundingPolicy';
+{$IFDEF BINUX}
+function QGuiApplication_x11Display(handle: QGuiApplicationH): Pointer; cdecl; external Qt6PasLib name 'QGuiApplication_x11Display';
+function QGuiApplication_xcbConnection(handle: QGuiApplicationH): Pointer; cdecl; external Qt6PasLib name 'QGuiApplication_xcbConnection';
+{$ENDIF}
 
 
 type
@@ -7879,8 +7883,6 @@ const
   QPageSizeId_LastPageSize = QPageSizeId_EnvelopeYou4;
 
 function QPagedPaintDevice_newPage(handle: QPagedPaintDeviceH): Boolean; cdecl; external Qt6PasLib name 'QPagedPaintDevice_newPage';
-procedure QPagedPaintDevice_setPageSize(handle: QPagedPaintDeviceH; size: QPageSizeH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_setPageSize';
-
 procedure QPagedPaintDevice_pageLayout(handle: QPagedPaintDeviceH; retval: QPageLayoutH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_pageLayout';
 procedure QPagedPaintDevice_pageRanges(handle: QPagedPaintDeviceH; retval: QPageRangesH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_pageRanges';
 function QPagedPaintDevice_setPageLayout(handle: QPagedPaintDeviceH; layout: QPageLayoutH): boolean; cdecl; external Qt6PasLib name 'QPagedPaintDevice_setPageLayout';
@@ -12571,7 +12573,7 @@ type
     QFileDialogDetail, QFileDialogList );
 
   QFileDialogFileMode = ( // QFileDialog::FileMode (1)
-    QFileDialogAnyFile, QFileDialogExistingFile, QFileDialogDirectory, QFileDialogExistingFiles, QFileDialogDirectoryOnly );
+    QFileDialogAnyFile, QFileDialogExistingFile, QFileDialogDirectory, QFileDialogExistingFiles);
 
   QFileDialogAcceptMode = ( // QFileDialog::AcceptMode (1)
     QFileDialogAcceptOpen, QFileDialogAcceptSave );
