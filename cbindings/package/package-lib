@@ -23,7 +23,7 @@
 # 	The '0' in above will be rev'ed by every change Z makes to the interface, the 6.2 is the LTS Qt6 release
 
 
-PACKVER='2'		# should start at '1', rev if you re-package same binary
+PACKVER='1'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 PRODUCT="libqt6pas6"	# note lib has upper case letters, this appears in Package name, two sixes but gets another 
@@ -187,7 +187,8 @@ function MakeRPM () {
 	sed -i "s/^Version:*./Version: ${VERSION}/" "$RDIR"/"$PRODUCT".spec
 	sed -i "s/^Release:*./Release: ${PACKVER}/" "$RDIR"/"$PRODUCT".spec
 	sed -i "s/INSERT_FULL_VER/Version: ${FULLVER}/" "$RDIR"/"$PRODUCT".spec
-	cp "$RDIR"/"$PRODUCT".spec "$PRODUCT""$1".spec-just-used
+	sed -i "s/INSERT_VERSION/${VERSION}/" "$RDIR"/"$PRODUCT".spec
+	cp -f "$RDIR"/"$PRODUCT".spec "$PRODUCT""$1".spec-just-used
 	cd "$RDIR"
 	fakeroot rpmbuild --target "$M_ARCH" --buildroot "$CURRENT"/"$RDIR" -bb "$PRODUCT".spec
 	cd .. 

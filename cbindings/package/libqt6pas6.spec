@@ -23,7 +23,7 @@ Lazarus main, current release versions do not need it.
 
 %files
 
-/usr/%{_lib}/libQt6Pas.so.6.2.2
+/usr/%{_lib}/libQt6Pas.so.INSERT_VERSION
 /usr/%{_lib}/libQt6Pas.so.6.2
 /usr/%{_lib}/libQt6Pas.so.6
 %dir "/usr/share/doc/libqt6pas6/"
