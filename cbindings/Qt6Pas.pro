@@ -10,15 +10,13 @@
 
 
 
-# Binding Release Version 6.2.0 against Qt6 6.2 LTS release.
-# Changes to Binding will trigger updates to the third component in version number
-# So, next one will be 6.2.1
+# Binding Release Version 6.2.3 against Qt6 6.2 LTS release.
 
-win32:VERSION = 6.2.0.0
-else:VERSION = 6.2.0
+win32:VERSION = 6.2.3.0
+else:VERSION = 6.2.3
 VER_MAJ = 6
 VER_MIN = 2
-VER_PAT = 0
+VER_PAT = 3
 win32:VERSION_PE_HEADER = 6.2
 
 QT += gui printsupport
@@ -88,7 +86,7 @@ CONFIG += release
 CONFIG += dll
 CONFIG += warn_off
 
-CONFIG += c++1z
+CONFIG += c++17
 
 message("Pascal Qt Interface for binding platform:" $$PLATFORM)
 DEFINES += $$PLATFORM   
@@ -254,6 +252,8 @@ HEADERS +=  \
            qpushbutton_c.h \
            qpushbutton_hook.h \
            qradiobutton_c.h \
+           qcompleter_c.h \
+           qcompleter_hook.h \
            qlineedit_c.h \
            qlineedit_hook.h \
            qplaintextedit_c.h \
@@ -394,6 +394,7 @@ HEADERS +=  \
            qbuttongroup_hook_c.h \
            qabstractbutton_hook_c.h \
            qpushbutton_hook_c.h \
+           qcompleter_hook_c.h \
            qlineedit_hook_c.h \
            qplaintextedit_hook_c.h \
            qtextedit_hook_c.h \
@@ -560,6 +561,7 @@ SOURCES +=  \
            qabstractbutton_c.cpp \
            qpushbutton_c.cpp \
            qradiobutton_c.cpp \
+           qcompleter_c.cpp \
            qlineedit_c.cpp \
            qplaintextedit_c.cpp \
            qtextedit_c.cpp \
@@ -656,6 +658,7 @@ SOURCES +=  \
            qbuttongroup_hook_c.cpp \
            qabstractbutton_hook_c.cpp \
            qpushbutton_hook_c.cpp \
+           qcompleter_hook_c.cpp \
            qlineedit_hook_c.cpp \
            qplaintextedit_hook_c.cpp \
            qtextedit_hook_c.cpp \

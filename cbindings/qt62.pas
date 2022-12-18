@@ -572,6 +572,7 @@ QMenuBar_hookH = class(QWidget_hookH) end;
 QButtonGroup_hookH = class(QObject_hookH) end;
 QAbstractButton_hookH = class(QWidget_hookH) end;
 QPushButton_hookH = class(QAbstractButton_hookH) end;
+QCompleter_hookH = class(QObject_hookH) end;
 QLineEdit_hookH = class(QWidget_hookH) end;
 QPlainTextEdit_hookH = class(QAbstractScrollArea_hookH) end;
 QPlainTextDocumentLayout_hookH = class(QAbstractTextDocumentLayout_hookH) end;
@@ -2588,7 +2589,6 @@ type
 
 function QAbstractEventDispatcher_instance(thread: QThreadH = nil): QAbstractEventDispatcherH; cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_instance';
 function QAbstractEventDispatcher_processEvents(handle: QAbstractEventDispatcherH; flags: QEventLoopProcessEventsFlags): Boolean; cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_processEvents';
-function QAbstractEventDispatcher_hasPendingEvents(handle: QAbstractEventDispatcherH): Boolean; cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_hasPendingEvents';
 procedure QAbstractEventDispatcher_registerSocketNotifier(handle: QAbstractEventDispatcherH; notifier: QSocketNotifierH); cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_registerSocketNotifier';
 procedure QAbstractEventDispatcher_unregisterSocketNotifier(handle: QAbstractEventDispatcherH; notifier: QSocketNotifierH); cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_unregisterSocketNotifier';
 function QAbstractEventDispatcher_registerTimer(handle: QAbstractEventDispatcherH; interval: Integer; timerType: QtTimerType; _object: QObjectH): Integer; cdecl; external Qt6PasLib name 'QAbstractEventDispatcher_registerTimer';
@@ -5461,24 +5461,6 @@ type
   QClipboard_dataChanged_Event = procedure () of object cdecl;
 
 
-{$ifdef BINUX }
-(*
-function QX11Info_isPlatformX11(): Boolean; cdecl; external Qt6PasLib name 'QX11Info_isPlatformX11';
-function QX11Info_display(): PDisplay; cdecl; external Qt6PasLib name 'QX11Info_display';
-function QX11Info_appScreen(): Integer; cdecl; external Qt6PasLib name 'QX11Info_appScreen';
-function QX11Info_appRootWindow(screen: Integer = -1): QtHANDLE; cdecl; external Qt6PasLib name 'QX11Info_appRootWindow';
-function QX11Info_appDpiX(screen: Integer = -1): Integer; cdecl; external Qt6PasLib name 'QX11Info_appDpiX';
-function QX11Info_appDpiY(screen: Integer = -1): Integer; cdecl; external Qt6PasLib name 'QX11Info_appDpiY';
-procedure QX11Info_setAppDpiX(screen: Integer; dpi: Integer); cdecl; external Qt6PasLib name 'QX11Info_setAppDpiX';
-procedure QX11Info_setAppDpiY(screen: Integer; dpi: Integer); cdecl; external Qt6PasLib name 'QX11Info_setAppDpiY';
-function QX11Info_appTime(): Longword; cdecl; external Qt6PasLib name 'QX11Info_appTime';
-function QX11Info_appUserTime(): Longword; cdecl; external Qt6PasLib name 'QX11Info_appUserTime';
-procedure QX11Info_setAppTime(time: Longword); cdecl; external Qt6PasLib name 'QX11Info_setAppTime';
-procedure QX11Info_setAppUserTime(time: Longword); cdecl; external Qt6PasLib name 'QX11Info_setAppUserTime';
-*)
-// function QX11Info_isCompositingManagerRunning(): Boolean; cdecl; external Qt6PasLib name 'QX11Info_isCompositingManagerRunning';
-{$endif}
-
 function QDrag_Create(dragSource: QObjectH): QDragH; cdecl; external Qt6PasLib name 'QDrag_Create';
 procedure QDrag_Destroy(handle: QDragH); cdecl; external Qt6PasLib name 'QDrag_Destroy'; 
 procedure QDrag_setMimeData(handle: QDragH; data: QMimeDataH); cdecl; external Qt6PasLib name 'QDrag_setMimeData';
@@ -5572,6 +5554,10 @@ function QGuiApplication_isSavingSession(handle: QGuiApplicationH): Boolean; cde
 function QGuiApplication_applicationState(): QtApplicationState; cdecl; external Qt6PasLib name 'QGuiApplication_applicationState';
 function QGuiApplication_highDpiScaleFactorRoundingPolicy(): QtHighDpiScaleFactorRoundingPolicy; cdecl; external Qt6PasLib name 'QGuiApplication_highDpiScaleFactorRoundingPolicy';
 procedure QGuiApplication_setHighDpiScaleFactorRoundingPolicy(const policy: QtHighDpiScaleFactorRoundingPolicy); cdecl; external Qt6PasLib name 'QGuiApplication_setHighDpiScaleFactorRoundingPolicy';
+{$IFDEF BINUX}
+function QGuiApplication_x11Display(handle: QGuiApplicationH): Pointer; cdecl; external Qt6PasLib name 'QGuiApplication_x11Display';
+function QGuiApplication_xcbConnection(handle: QGuiApplicationH): Pointer; cdecl; external Qt6PasLib name 'QGuiApplication_xcbConnection';
+{$ENDIF}
 
 
 type
@@ -6200,6 +6186,15 @@ procedure QWidget_inputMethodQuery(handle: QWidgetH; retval: QVariantH; AnonPara
 function QWidget_inputMethodHints(handle: QWidgetH): QtInputMethodHints; cdecl; external Qt6PasLib name 'QWidget_inputMethodHints';
 procedure QWidget_setInputMethodHints(handle: QWidgetH; hints: QtInputMethodHints); cdecl; external Qt6PasLib name 'QWidget_setInputMethodHints';
 function QWidget_to_QPaintDevice(handle: QWidgetH): QPaintDeviceH; cdecl; external Qt6PasLib name 'QWidget_to_QPaintDevice';
+
+function QWidget_screen(handle: QWidgetH): QScreenH; cdecl; external Qt6PasLib name 'QWidget_screen';
+procedure QWidget_setScreen(handle: QWidgetH; screen: QScreenH); cdecl; external Qt6PasLib name 'QWidget_setScreen';
+procedure QWidget_setWindowFlag(handle: QWidgetH; flag: QtWindowType; setOn: boolean); cdecl; external Qt6PasLib name 'QWidget_setWindowFlag';
+function QWidget_hasTabletTracking(handle: QWidgetH): boolean; cdecl; external Qt6PasLib name 'QWidget_hasTabletTracking';
+procedure QWidget_setTabletTracking(handle: QWidgetH; aEnable: boolean); cdecl; external Qt6PasLib name 'QWidget_setTabletTracking';
+function QWidget_toolTipDuration(handle: QWidgetH): integer; cdecl; external Qt6PasLib name 'QWidget_toolTipDuration';
+procedure QWidget_setToolTipDuration(handle: QWidgetH; aMsec: integer); cdecl; external Qt6PasLib name 'QWidget_setToolTipDuration';
+
 
 type
   QWidget_customContextMenuRequested_Event = procedure (pos: PQtPoint) of object cdecl;
@@ -7888,8 +7883,6 @@ const
   QPageSizeId_LastPageSize = QPageSizeId_EnvelopeYou4;
 
 function QPagedPaintDevice_newPage(handle: QPagedPaintDeviceH): Boolean; cdecl; external Qt6PasLib name 'QPagedPaintDevice_newPage';
-procedure QPagedPaintDevice_setPageSize(handle: QPagedPaintDeviceH; size: QPageSizeH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_setPageSize';
-
 procedure QPagedPaintDevice_pageLayout(handle: QPagedPaintDeviceH; retval: QPageLayoutH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_pageLayout';
 procedure QPagedPaintDevice_pageRanges(handle: QPagedPaintDeviceH; retval: QPageRangesH); cdecl; external Qt6PasLib name 'QPagedPaintDevice_pageRanges';
 function QPagedPaintDevice_setPageLayout(handle: QPagedPaintDeviceH; layout: QPageLayoutH): boolean; cdecl; external Qt6PasLib name 'QPagedPaintDevice_setPageLayout';
@@ -8061,10 +8054,10 @@ function QPrinter_duplex(handle: QPrinterH): QPrinterDuplexMode; cdecl; external
 procedure QPrinter_supportedResolutions(handle: QPrinterH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinter_supportedResolutions';
 procedure QPrinter_setFontEmbeddingEnabled(handle: QPrinterH; enable: Boolean); cdecl; external Qt6PasLib name 'QPrinter_setFontEmbeddingEnabled';
 function QPrinter_fontEmbeddingEnabled(handle: QPrinterH): Boolean; cdecl; external Qt6PasLib name 'QPrinter_fontEmbeddingEnabled';
-procedure QPrinter_paperRect(handle: QPrinterH; retval: QRectFH; AnonParam1: QPrinterUnit); cdecl; external Qt6PasLib name 'QPrinter_paperRect';
-procedure QPrinter_pageRect(handle: QPrinterH; retval: QRectFH; AnonParam1: QPrinterUnit); cdecl; external Qt6PasLib name 'QPrinter_pageRect';
-procedure QPrinter_paperRect(handle: QPrinterH; retval: PRect); cdecl; external Qt6PasLib name 'QPrinter_paperRect2';
-procedure QPrinter_pageRect(handle: QPrinterH; retval: PRect); cdecl; external Qt6PasLib name 'QPrinter_pageRect2';
+procedure QPrinter_paperRect(handle: QPrinterH; AnonParam1: QPrinterUnit; retval: QRectFH); cdecl; external Qt6PasLib name 'QPrinter_paperRect';
+procedure QPrinter_pageRect(handle: QPrinterH; AnonParam1: QPrinterUnit; retval: QRectFH); cdecl; external Qt6PasLib name 'QPrinter_pageRect';
+procedure QPrinter_paperRect(handle: QPrinterH; AnonParam1: QPrinterUnit; retval: PRect); cdecl; external Qt6PasLib name 'QPrinter_paperRect2';
+procedure QPrinter_pageRect(handle: QPrinterH; AnonParam1: QPrinterUnit; retval: PRect); cdecl; external Qt6PasLib name 'QPrinter_pageRect2';
 
 procedure QPrinter_pageLayout(handle: QPrinterH; retval: QPageLayoutH); cdecl; external Qt6PasLib name 'QPrinter_pageLayout';
 procedure QPrinter_pageSize(handle: QPrinterH; retval: QPageSizeH);  cdecl; external Qt6PasLib name 'QPrinter_pageSize';
@@ -8092,13 +8085,6 @@ procedure QPrinter_setWinPageSize(handle: QPrinterH; winPageSize: Integer); cdec
 function QPrinter_winPageSize(handle: QPrinterH): Integer; cdecl; external Qt6PasLib name 'QPrinter_winPageSize';
 {$endif}
 
-//procedure QPrinter_setPageSizeMM(handle: QPrinterH; size: QSizeFH); cdecl; external Qt6PasLib name 'QPrinter_setPageSizeMM';
-// procedure QPrinter_setPaperSize(handle: QPrinterH; AnonParam1: QPagedPaintDevicePageSize); cdecl; external Qt6PasLib name 'QPrinter_setPaperSize';
-// function QPrinter_paperSize(handle: QPrinterH): QPagedPaintDevicePageSize; cdecl; external Qt6PasLib name 'QPrinter_paperSize';
-// procedure QPrinter_setPaperSize(handle: QPrinterH; paperSize: QSizeFH; _unit: QPrinterUnit); cdecl; external Qt6PasLib name 'QPrinter_setPaperSize2';
-// procedure QPrinter_paperSize(handle: QPrinterH; retval: QSizeFH; _unit: QPrinterUnit); cdecl; external Qt6PasLib name 'QPrinter_paperSize2';
-
-
 function QPrinterInfo_Create(): QPrinterInfoH; cdecl; external Qt6PasLib name 'QPrinterInfo_Create';
 procedure QPrinterInfo_Destroy(handle: QPrinterInfoH); cdecl; external Qt6PasLib name 'QPrinterInfo_Destroy'; 
 function QPrinterInfo_Create(other: QPrinterInfoH): QPrinterInfoH; cdecl; external Qt6PasLib name 'QPrinterInfo_Create2';
@@ -8109,12 +8095,22 @@ procedure QPrinterInfo_location(handle: QPrinterInfoH; retval: PWideString); cde
 procedure QPrinterInfo_makeAndModel(handle: QPrinterInfoH; retval: PWideString); cdecl; external Qt6PasLib name 'QPrinterInfo_makeAndModel';
 function QPrinterInfo_isNull(handle: QPrinterInfoH): Boolean; cdecl; external Qt6PasLib name 'QPrinterInfo_isNull';
 function QPrinterInfo_isDefault(handle: QPrinterInfoH): Boolean; cdecl; external Qt6PasLib name 'QPrinterInfo_isDefault';
-procedure QPrinterInfo_supportedPaperSizes(handle: QPrinterInfoH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_supportedPaperSizes';
+procedure QPrinterInfo_supportedPageSizes(handle: QPrinterInfoH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_supportedPageSizes';
+function QPrinterInfo_defaultColorMode(handle: QPrinterInfoH): QPrinterColorMode; cdecl; external Qt6PasLib name 'QPrinterInfo_defaultColorMode';
+function QPrinterInfo_defaultDuplexMode(handle: QPrinterInfoH): QPrinterDuplexMode; cdecl; external Qt6PasLib name 'QPrinterInfo_defaultDuplexMode';
+procedure QPrinterInfo_defaultPageSize(handle: QPrinterInfoH; retval: QPageSizeH); cdecl; external Qt6PasLib name 'QPrinterInfo_defaultPageSize';
+function QPrinterInfo_isRemote(handle: QPrinterInfoH): boolean; cdecl; external Qt6PasLib name 'QPrinterInfo_isRemote';
+procedure QPrinterInfo_maximumPhysicalPageSize(handle: QPrinterInfoH; retval: QPageSizeH); cdecl; external Qt6PasLib name 'QPrinterInfo_maximumPhysicalPageSize';
+procedure QPrinterInfo_minimumPhysicalPageSize(handle: QPrinterInfoH; retval: QPageSizeH); cdecl; external Qt6PasLib name 'QPrinterInfo_minimumPhysicalPageSize';
+function QPrinterInfo_state(handle: QPrinterInfoH): QPrinterPrinterState; cdecl; external Qt6PasLib name 'QPrinterInfo_state';
+procedure QPrinterInfo_supportedColorModes(handle: QPrinterInfoH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_supportedColorModes';
+procedure QPrinterInfo_supportedDuplexModes(handle: QPrinterInfoH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_supportedDuplexModes';
+procedure QPrinterInfo_supportedResolutions(handle: QPrinterInfoH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_supportedResolutions';
 procedure QPrinterInfo_availablePrinters(retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QPrinterInfo_availablePrinters';
 procedure QPrinterInfo_availablePrinterNames(retval: QStringListH); cdecl; external Qt6PasLib name 'QPrinterInfo_availablePrinterNames';
 procedure QPrinterInfo_defaultPrinter(retval: QPrinterInfoH); cdecl; external Qt6PasLib name 'QPrinterInfo_defaultPrinter';
 procedure QPrinterInfo_printerInfo(retval: QPrinterInfoH; printerName: PWideString); cdecl; external Qt6PasLib name 'QPrinterInfo_printerInfo';
-
+procedure QPrinterInfo_defaultPrinterName(retval: PWideString); cdecl; external Qt6PasLib name 'QPrinterInfo_defaultPrinterName';
 
 type
   QFontStyle = ( // QFont::Style (1)
@@ -8158,27 +8154,7 @@ type
     QFontExpanded = 125,
     QFontExtraExpanded = 150,
     QFontUltraExpanded = 200 );
-  (*
-  QFontResolveProperties = (  //QFont::ResolveProperties (2)
-    QFontFamilyResolved = $0001,
-    QFontSizeResolved = $0002,
-    QFontStyleHintResolved = $0004,
-    QFontStyleStrategyResolved = $0008,
-    QFontWeightResolved = $0010,
-    QFontStyleResolved = $0020,
-    QFontUnderlineResolved = $0040,
-    QFontOverlineResolved = $0080,
-    QFontStrikeOutResolved = $0100,
-    QFontFixedPitchResolved = $0200,
-    QFontStretchResolved = $0400,
-    QFontKerningResolved = $0800,
-    QFontCapitalizationResolved = $1000,
-    QFontLetterSpacingResolved = $2000,
-    QFontWordSpacingResolved = $4000,
-    QFontHintingPreferenceResolved = $8000,
-    QFontStyleNameResolved = $10000,
-    QFontAllPropertiesResolved = $1ffff );
-   *)
+
 type
   QFontStyleHint = cardinal; //  QFont::StyleHint (4)
 
@@ -8249,8 +8225,8 @@ function QFont_styleHint(handle: QFontH): QFontStyleHint; cdecl; external Qt6Pas
 function QFont_styleStrategy(handle: QFontH): QFontStyleStrategy; cdecl; external Qt6PasLib name 'QFont_styleStrategy';
 procedure QFont_setStyleHint(handle: QFontH; AnonParam1: QFontStyleHint; AnonParam2: QFontStyleStrategy = QFontPreferDefault); cdecl; external Qt6PasLib name 'QFont_setStyleHint';
 procedure QFont_setStyleStrategy(handle: QFontH; s: QFontStyleStrategy); cdecl; external Qt6PasLib name 'QFont_setStyleStrategy';
-function QFont_stretch(handle: QFontH): Integer; cdecl; external Qt6PasLib name 'QFont_stretch';
-procedure QFont_setStretch(handle: QFontH; AnonParam1: Integer); cdecl; external Qt6PasLib name 'QFont_setStretch';
+function QFont_stretch(handle: QFontH): QFontStretch; cdecl; external Qt6PasLib name 'QFont_stretch';
+procedure QFont_setStretch(handle: QFontH; stretch: QFontStretch); cdecl; external Qt6PasLib name 'QFont_setStretch';
 function QFont_letterSpacing(handle: QFontH): qreal; cdecl; external Qt6PasLib name 'QFont_letterSpacing';
 function QFont_letterSpacingType(handle: QFontH): QFontSpacingType; cdecl; external Qt6PasLib name 'QFont_letterSpacingType';
 procedure QFont_setLetterSpacing(handle: QFontH; _type: QFontSpacingType; spacing: qreal); cdecl; external Qt6PasLib name 'QFont_setLetterSpacing';
@@ -8320,27 +8296,29 @@ const
     QFontDatabaseNko = 33 { $21 };
     QFontDatabaseWritingSystemsCount = 34 { $22 };
 
+type
+  QFontDataBaseSystemFont = (QFontDatabaseGeneralFont, QFontDatabaseFixedFont,
+    QFontDatabaseTitleFont, QFontDatabaseSmallestReadableFont);
+
 
 procedure QFontDatabase_standardSizes(retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QFontDatabase_standardSizes';
-function QFontDatabase_Create(): QFontDatabaseH; cdecl; external Qt6PasLib name 'QFontDatabase_Create';
-procedure QFontDatabase_Destroy(handle: QFontDatabaseH); cdecl; external Qt6PasLib name 'QFontDatabase_Destroy'; 
-procedure QFontDatabase_writingSystems(handle: QFontDatabaseH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystems';
-procedure QFontDatabase_writingSystems(handle: QFontDatabaseH; retval: PPtrIntArray; family: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystems2';
-procedure QFontDatabase_families(handle: QFontDatabaseH; retval: QStringListH; writingSystem: QFontDatabaseWritingSystem = QFontDatabaseAny); cdecl; external Qt6PasLib name 'QFontDatabase_families';
-procedure QFontDatabase_styles(handle: QFontDatabaseH; retval: QStringListH; family: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_styles';
-procedure QFontDatabase_pointSizes(handle: QFontDatabaseH; retval: PPtrIntArray; family: PWideString; style: PWideString = nil); cdecl; external Qt6PasLib name 'QFontDatabase_pointSizes';
-procedure QFontDatabase_smoothSizes(handle: QFontDatabaseH; retval: PPtrIntArray; family: PWideString; style: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_smoothSizes';
-procedure QFontDatabase_styleString(handle: QFontDatabaseH; retval: PWideString; font: QFontH); cdecl; external Qt6PasLib name 'QFontDatabase_styleString';
-procedure QFontDatabase_styleString(handle: QFontDatabaseH; retval: PWideString; fontInfo: QFontInfoH); cdecl; external Qt6PasLib name 'QFontDatabase_styleString2';
-procedure QFontDatabase_font(handle: QFontDatabaseH; retval: QFontH; family: PWideString; style: PWideString; pointSize: Integer); cdecl; external Qt6PasLib name 'QFontDatabase_font';
-function QFontDatabase_isBitmapScalable(handle: QFontDatabaseH; family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isBitmapScalable';
-function QFontDatabase_isSmoothlyScalable(handle: QFontDatabaseH; family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isSmoothlyScalable';
-function QFontDatabase_isScalable(handle: QFontDatabaseH; family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isScalable';
-function QFontDatabase_isFixedPitch(handle: QFontDatabaseH; family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isFixedPitch';
-function QFontDatabase_italic(handle: QFontDatabaseH; family: PWideString; style: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_italic';
-function QFontDatabase_bold(handle: QFontDatabaseH; family: PWideString; style: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_bold';
-function QFontDatabase_weight(handle: QFontDatabaseH; family: PWideString; style: PWideString): Integer; cdecl; external Qt6PasLib name 'QFontDatabase_weight';
-function QFontDatabase_hasFamily(handle: QFontDatabaseH; family: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_hasFamily';
+procedure QFontDatabase_writingSystems(retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystems';
+procedure QFontDatabase_writingSystems(retval: PPtrIntArray; family: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystems2';
+procedure QFontDatabase_families(retval: QStringListH; writingSystem: QFontDatabaseWritingSystem = QFontDatabaseAny); cdecl; external Qt6PasLib name 'QFontDatabase_families';
+procedure QFontDatabase_styles(retval: QStringListH; family: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_styles';
+procedure QFontDatabase_pointSizes(retval: PPtrIntArray; family: PWideString; style: PWideString = nil); cdecl; external Qt6PasLib name 'QFontDatabase_pointSizes';
+procedure QFontDatabase_smoothSizes(retval: PPtrIntArray; family: PWideString; style: PWideString); cdecl; external Qt6PasLib name 'QFontDatabase_smoothSizes';
+procedure QFontDatabase_styleString(retval: PWideString; font: QFontH); cdecl; external Qt6PasLib name 'QFontDatabase_styleString';
+procedure QFontDatabase_styleString(retval: PWideString; fontInfo: QFontInfoH); cdecl; external Qt6PasLib name 'QFontDatabase_styleString2';
+procedure QFontDatabase_font(retval: QFontH; family: PWideString; style: PWideString; pointSize: Integer); cdecl; external Qt6PasLib name 'QFontDatabase_font';
+function QFontDatabase_isBitmapScalable(family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isBitmapScalable';
+function QFontDatabase_isSmoothlyScalable(family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isSmoothlyScalable';
+function QFontDatabase_isScalable(family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isScalable';
+function QFontDatabase_isFixedPitch(family: PWideString; style: PWideString = nil): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isFixedPitch';
+function QFontDatabase_italic(family: PWideString; style: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_italic';
+function QFontDatabase_bold(family: PWideString; style: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_bold';
+function QFontDatabase_weight(family: PWideString; style: PWideString): Integer; cdecl; external Qt6PasLib name 'QFontDatabase_weight';
+function QFontDatabase_hasFamily(family: PWideString): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_hasFamily';
 procedure QFontDatabase_writingSystemName(retval: PWideString; writingSystem: QFontDatabaseWritingSystem); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystemName';
 procedure QFontDatabase_writingSystemSample(retval: PWideString; writingSystem: QFontDatabaseWritingSystem); cdecl; external Qt6PasLib name 'QFontDatabase_writingSystemSample';
 function QFontDatabase_addApplicationFont(fileName: PWideString): Integer; cdecl; external Qt6PasLib name 'QFontDatabase_addApplicationFont';
@@ -8348,7 +8326,8 @@ function QFontDatabase_addApplicationFontFromData(fontData: QByteArrayH): Intege
 procedure QFontDatabase_applicationFontFamilies(retval: QStringListH; id: Integer); cdecl; external Qt6PasLib name 'QFontDatabase_applicationFontFamilies';
 function QFontDatabase_removeApplicationFont(id: Integer): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_removeApplicationFont';
 function QFontDatabase_removeAllApplicationFonts(): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_removeAllApplicationFonts';
-function QFontDatabase_supportsThreadedFontRendering(): Boolean; cdecl; external Qt6PasLib name 'QFontDatabase_supportsThreadedFontRendering';
+function QFontDatabase_isPrivateFamily(): boolean; cdecl; external Qt6PasLib name 'QFontDatabase_isPrivateFamily';
+function QFontDatabase_systemFont(sysfont: QFontDataBaseSystemFont; retval: QFontH): boolean; cdecl; external Qt6PasLib name 'QFontDatabase_systemFont';
 
 
 type
@@ -8904,11 +8883,8 @@ function QFontMetrics_inFont(handle: QFontMetricsH; AnonParam1: PWideChar): Bool
 function QFontMetrics_inFontUcs4(handle: QFontMetricsH; ucs4: LongWord): Boolean; cdecl; external Qt6PasLib name 'QFontMetrics_inFontUcs4';
 function QFontMetrics_leftBearing(handle: QFontMetricsH; AnonParam1: PWideChar): Integer; cdecl; external Qt6PasLib name 'QFontMetrics_leftBearing';
 function QFontMetrics_rightBearing(handle: QFontMetricsH; AnonParam1: PWideChar): Integer; cdecl; external Qt6PasLib name 'QFontMetrics_rightBearing';
-// function QFontMetrics_width(handle: QFontMetricsH; AnonParam1: PWideString; len: Integer = -1): Integer; cdecl; external Qt6PasLib name 'QFontMetrics_width';
 function QFontMetrics_horizontalAdvance(handle: QFontMetricsH; AnonParam1: PWideString; len: Integer = -1): integer; cdecl; external Qt6PasLib name 'QFontMetrics_horizontalAdvance';
 function QFontMetrics_horizontalAdvance(handle: QFontMetricsH; AnonParam1: PWideChar): integer; cdecl; external Qt6PasLib name 'QFontMetrics_horizontalAdvance2';
-//function QFontMetrics_width(handle: QFontMetricsH; AnonParam1: PWideString; len: Integer; flags: Integer): Integer; cdecl; external Qt6PasLib name 'QFontMetrics_width2';
-//function QFontMetrics_width(handle: QFontMetricsH; AnonParam1: PWideChar): Integer; cdecl; external Qt6PasLib name 'QFontMetrics_width3';
 procedure QFontMetrics_boundingRect(handle: QFontMetricsH; retval: PRect; AnonParam1: PWideChar); cdecl; external Qt6PasLib name 'QFontMetrics_boundingRect';
 procedure QFontMetrics_boundingRect(handle: QFontMetricsH; retval: PRect; text: PWideString); cdecl; external Qt6PasLib name 'QFontMetrics_boundingRect2';
 procedure QFontMetrics_boundingRect(handle: QFontMetricsH; retval: PRect; r: PRect; flags: Integer; text: PWideString; tabstops: Integer = 0; tabarray: PInteger = nil); cdecl; external Qt6PasLib name 'QFontMetrics_boundingRect3';
@@ -8949,8 +8925,6 @@ function QFontMetricsF_inFont(handle: QFontMetricsFH; AnonParam1: PWideChar): Bo
 function QFontMetricsF_inFontUcs4(handle: QFontMetricsFH; ucs4: LongWord): Boolean; cdecl; external Qt6PasLib name 'QFontMetricsF_inFontUcs4';
 function QFontMetricsF_leftBearing(handle: QFontMetricsFH; AnonParam1: PWideChar): qreal; cdecl; external Qt6PasLib name 'QFontMetricsF_leftBearing';
 function QFontMetricsF_rightBearing(handle: QFontMetricsFH; AnonParam1: PWideChar): qreal; cdecl; external Qt6PasLib name 'QFontMetricsF_rightBearing';
-//function QFontMetricsF_width(handle: QFontMetricsFH; _string: PWideString): qreal; cdecl; external Qt6PasLib name 'QFontMetricsF_width';
-//function QFontMetricsF_width(handle: QFontMetricsFH; AnonParam1: PWideChar): qreal; cdecl; external Qt6PasLib name 'QFontMetricsF_width2';
 procedure QFontMetricsF_boundingRect(handle: QFontMetricsFH; retval: QRectFH; _string: PWideString); cdecl; external Qt6PasLib name 'QFontMetricsF_boundingRect';
 procedure QFontMetricsF_boundingRect(handle: QFontMetricsFH; retval: QRectFH; AnonParam1: PWideChar); cdecl; external Qt6PasLib name 'QFontMetricsF_boundingRect2';
 procedure QFontMetricsF_boundingRect(handle: QFontMetricsFH; retval: QRectFH; r: QRectFH; flags: Integer; _string: PWideString; tabstops: Integer = 0; tabarray: PInteger = nil); cdecl; external Qt6PasLib name 'QFontMetricsF_boundingRect3';
@@ -9101,6 +9075,7 @@ procedure QTextDocument_setDefaultCursorMoveStyle(handle: QTextDocumentH; style:
 procedure QTextDocument_undo(handle: QTextDocumentH); cdecl; external Qt6PasLib name 'QTextDocument_undo2';
 procedure QTextDocument_redo(handle: QTextDocumentH); cdecl; external Qt6PasLib name 'QTextDocument_redo2';
 procedure QTextDocument_setModified(handle: QTextDocumentH; m: Boolean = True); cdecl; external Qt6PasLib name 'QTextDocument_setModified';
+procedure QTextDocument_allFormats(handle: QTextDocumentH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QTextDocument_allFormats';
 
 function QAbstractTextDocumentLayout_hitTest(handle: QAbstractTextDocumentLayoutH; point: PQtPointF; accuracy: QtHitTestAccuracy): Integer; cdecl; external Qt6PasLib name 'QAbstractTextDocumentLayout_hitTest';
 procedure QAbstractTextDocumentLayout_anchorAt(handle: QAbstractTextDocumentLayoutH; retval: PWideString; pos: PQtPointF); cdecl; external Qt6PasLib name 'QAbstractTextDocumentLayout_anchorAt';
@@ -10153,6 +10128,55 @@ function QRadioButton_Create(text: PWideString; parent: QWidgetH = nil): QRadioB
 procedure QRadioButton_sizeHint(handle: QRadioButtonH; retval: PSize); cdecl; external Qt6PasLib name 'QRadioButton_sizeHint';
 procedure QRadioButton_minimumSizeHint(handle: QRadioButtonH; retval: PSize); cdecl; external Qt6PasLib name 'QRadioButton_minimumSizeHint';
 
+type
+  QCompleter_activated_Event = procedure (aIndex: QModelIndexH) of object cdecl;
+  QCompleter_activated2_Event = procedure (aText: PWideString) of object cdecl;
+  QCompleter_highlighted_Event = procedure (aIndex: QModelIndexH) of object cdecl;
+  QCompleter_highlighted2_Event = procedure (aText: PWideString) of object cdecl;
+
+type
+  QCompleterCompletionMode = (QCompleterPopupCompletion, QCompleterUnfilteredPopupCompletion, QCompleterInlineCompletion);
+  QCompleterModelSorting = (QCompleterUnsortedModel, QCompleterCaseSensitiveSortedModel, QCompleterCaseInsensitivelySortedModel);
+
+function QCompleter_Create(): QCompleterH; cdecl; external Qt6PasLib name 'QCompleter_Create';
+function QCompleter_Create2(parent: QObjectH): QCompleterH; cdecl; external Qt6PasLib name 'QCompleter_Create2';
+function QCompleter_Create3(model: QAbstractItemModelH; parent: QObjectH): QCompleterH; cdecl; external Qt6PasLib name 'QCompleter_Create3';
+function QCompleter_Create4(list: QStringListH; parent: QObjectH): QCompleterH; cdecl; external Qt6PasLib name 'QCompleter_Create4';
+procedure QCompleter_Destroy(handle: QCompleterH); cdecl; external Qt6PasLib name 'QCompleter_Destroy';
+function QCompleter_caseSensitivity(handle: QCompleterH): QtCaseSensitivity; cdecl; external Qt6PasLib name 'QCompleter_caseSensitivity';
+function QCompleter_completionColumn(handle: QCompleterH): integer; cdecl; external Qt6PasLib name 'QCompleter_completionColumn';
+function QCompleter_completionCount(handle: QCompleterH): integer; cdecl; external Qt6PasLib name 'QCompleter_completionCount';
+function QCompleter_completionMode(handle: QCompleterH): QCompleterCompletionMode; cdecl; external Qt6PasLib name 'QCompleter_completionMode';
+function QCompleter_completionModel(handle: QCompleterH): QAbstractItemModelH; cdecl; external Qt6PasLib name 'QCompleter_completionModel';
+procedure QCompleter_completionPrefix(handle: QCompleterH; retval: PWideString); cdecl; external Qt6PasLib name 'QCompleter_completionPrefix';
+function QCompleter_completionRole(handle: QCompleterH): integer; cdecl; external Qt6PasLib name 'QCompleter_completionRole';
+procedure QCompleter_currentCompletion(handle: QCompleterH; retval: PWideString); cdecl; external Qt6PasLib name 'QCompleter_currentCompletion';
+procedure QCompleter_currentIndex(handle: QCompleterH; retval: QModelIndexH); cdecl; external Qt6PasLib name 'QCompleter_currentIndex';
+function QCompleter_currentRow(handle: QCompleterH): integer; cdecl; external Qt6PasLib name 'QCompleter_currentRow';
+function QCompleter_filterMode(handle: QCompleterH): QtMatchFlags; cdecl; external Qt6PasLib name 'QCompleter_filterMode';
+function QCompleter_maxVisibleItems(handle: QCompleterH): integer; cdecl; external Qt6PasLib name 'QCompleter_maxVisibleItems';
+function QCompleter_model(handle: QCompleterH): QAbstractItemModelH; cdecl; external Qt6PasLib name 'QCompleter_model';
+function QCompleter_modelSorting(handle: QCompleterH): QCompleterModelSorting; cdecl; external Qt6PasLib name 'QCompleter_modelSorting';
+procedure QCompleter_pathFromIndex(handle: QCompleterH; aModel: QModelIndexH; retval: PWideString); cdecl; external Qt6PasLib name 'QCompleter_pathFromIndex';
+function QCompleter_popup(handle: QCompleterH): QAbstractItemViewH; cdecl; external Qt6PasLib name 'QCompleter_popup';
+procedure QCompleter_setCaseSensitivity(handle: QCompleterH; aCaseSensitivity: QtCaseSensitivity); cdecl; external Qt6PasLib name 'setCaseSensitivity';
+procedure QCompleter_setCompletionColumn(handle: QCompleterH; aColumn: integer); cdecl; external Qt6PasLib name 'QCompleter_setCompletionColumn';
+procedure QCompleter_setCompletionMode(handle: QCompleterH; aMode: QCompleterCompletionMode); cdecl; external Qt6PasLib name 'QCompleter_setCompletionMode';
+procedure QCompleter_setCompletionRole(handle: QCompleterH; aRole: integer); cdecl; external Qt6PasLib name 'QCompleter_setCompletionRole';
+procedure QCompleter_setCurrentRow(handle: QCompleterH; aRow: integer); cdecl; external Qt6PasLib name 'QCompleter_setCurrentRow';
+procedure QCompleter_setFilterMode(handle: QCompleterH; aFilterMode: QtMatchFlags); cdecl; external Qt6PasLib name 'QCompleter_setFilterMode';
+procedure QCompleter_setMaxVisibleItems(handle: QCompleterH; aMaxItems: integer); cdecl; external Qt6PasLib name 'QCompleter_setMaxVisibleItems';
+procedure QCompleter_setModel(handle: QCompleterH; aModel: QAbstractItemModelH); cdecl; external Qt6PasLib name 'QCompleter_setModel';
+procedure QCompleter_setModelSorting(handle: QCompleterH; aSorting: QCompleterModelSorting); cdecl; external Qt6PasLib name 'QCompleter_setModelSorting';
+procedure QCompleter_setPopup(handle: QCompleterH; aPopup: QAbstractItemViewH); cdecl; external Qt6PasLib name 'QCompleter_setPopup';
+procedure QCompleter_setWidget(handle: QCompleterH; aWidget: QWidgetH); cdecl; external Qt6PasLib name 'QCompleter_setWidget';
+procedure QCompleter_splitPath(handle: QCompleterH; aPath: PWideString; retval: QStringListH); cdecl; external Qt6PasLib name 'QCompleter_splitPath';
+function QCompleter_widget(handle: QCompleterH):QWidgetH; cdecl; external Qt6PasLib name 'QCompleter_widget';
+function QCompleter_wrapAround(handle: QCompleterH): boolean; cdecl; external Qt6PasLib name 'QCompleter_wrapAround';
+procedure QCompleter_complete(handle: QCompleterH; r: PRect); cdecl; external Qt6PasLib name 'QCompleter_complete';
+procedure QCompleter_setCompletionPrefix(handle: QCompleterH; aPrefix: PWideString); cdecl; external Qt6PasLib name 'QCompleter_setCompletionPrefix';
+procedure QCompleter_setWrapAround(handle: QCompleterH; aWrap: boolean); cdecl; external Qt6PasLib name 'QCompleter_setWrapAround';
+
 
 type
   QLineEditEchoMode = ( // QLineEdit::EchoMode (1)
@@ -10211,7 +10235,6 @@ procedure QLineEdit_setInputMask(handle: QLineEditH; inputMask: PWideString); cd
 function QLineEdit_hasAcceptableInput(handle: QLineEditH): Boolean; cdecl; external Qt6PasLib name 'QLineEdit_hasAcceptableInput';
 procedure QLineEdit_setTextMargins(handle: QLineEditH; left: Integer; top: Integer; right: Integer; bottom: Integer); cdecl; external Qt6PasLib name 'QLineEdit_setTextMargins';
 procedure QLineEdit_setTextMargins(handle: QLineEditH; margins: QMarginsH); cdecl; external Qt6PasLib name 'QLineEdit_setTextMargins2';
-// procedure QLineEdit_getTextMargins(handle: QLineEditH; left: PInteger; top: PInteger; right: PInteger; bottom: PInteger); cdecl; external Qt6PasLib name 'QLineEdit_getTextMargins';
 procedure QLineEdit_textMargins(handle: QLineEditH; retval: QMarginsH); cdecl; external Qt6PasLib name 'QLineEdit_textMargins';
 procedure QLineEdit_setText(handle: QLineEditH; AnonParam1: PWideString); cdecl; external Qt6PasLib name 'QLineEdit_setText';
 procedure QLineEdit_clear(handle: QLineEditH); cdecl; external Qt6PasLib name 'QLineEdit_clear';
@@ -10833,10 +10856,6 @@ procedure QComboBox_setMaxVisibleItems(handle: QComboBoxH; maxItems: Integer); c
 function QComboBox_count(handle: QComboBoxH): Integer; cdecl; external Qt6PasLib name 'QComboBox_count';
 procedure QComboBox_setMaxCount(handle: QComboBoxH; max: Integer); cdecl; external Qt6PasLib name 'QComboBox_setMaxCount';
 function QComboBox_maxCount(handle: QComboBoxH): Integer; cdecl; external Qt6PasLib name 'QComboBox_maxCount';
-//function QComboBox_autoCompletion(handle: QComboBoxH): Boolean; cdecl; external Qt6PasLib name 'QComboBox_autoCompletion';
-// procedure QComboBox_setAutoCompletion(handle: QComboBoxH; enable: Boolean); cdecl; external Qt6PasLib name 'QComboBox_setAutoCompletion';
-//function QComboBox_autoCompletionCaseSensitivity(handle: QComboBoxH): QtCaseSensitivity; cdecl; external Qt6PasLib name 'QComboBox_autoCompletionCaseSensitivity';
-//procedure QComboBox_setAutoCompletionCaseSensitivity(handle: QComboBoxH; sensitivity: QtCaseSensitivity); cdecl; external Qt6PasLib name 'QComboBox_setAutoCompletionCaseSensitivity';
 function QComboBox_duplicatesEnabled(handle: QComboBoxH): Boolean; cdecl; external Qt6PasLib name 'QComboBox_duplicatesEnabled';
 procedure QComboBox_setDuplicatesEnabled(handle: QComboBoxH; enable: Boolean); cdecl; external Qt6PasLib name 'QComboBox_setDuplicatesEnabled';
 procedure QComboBox_setFrame(handle: QComboBoxH; AnonParam1: Boolean); cdecl; external Qt6PasLib name 'QComboBox_setFrame';
@@ -11719,8 +11738,6 @@ procedure QListWidget_closePersistentEditor(handle: QListWidgetH; item: QListWid
 function QListWidget_itemWidget(handle: QListWidgetH; item: QListWidgetItemH): QWidgetH; cdecl; external Qt6PasLib name 'QListWidget_itemWidget';
 procedure QListWidget_setItemWidget(handle: QListWidgetH; item: QListWidgetItemH; widget: QWidgetH); cdecl; external Qt6PasLib name 'QListWidget_setItemWidget';
 procedure QListWidget_removeItemWidget(handle: QListWidgetH; item: QListWidgetItemH); cdecl; external Qt6PasLib name 'QListWidget_removeItemWidget';
-// function QListWidget_isItemSelected(handle: QListWidgetH; item: QListWidgetItemH): Boolean; cdecl; external Qt6PasLib name 'QListWidget_isItemSelected';
-// procedure QListWidget_setItemSelected(handle: QListWidgetH; item: QListWidgetItemH; select: Boolean); cdecl; external Qt6PasLib name 'QListWidget_setItemSelected';
 procedure QListWidget_selectedItems(handle: QListWidgetH; retval: PPtrIntArray); cdecl; external Qt6PasLib name 'QListWidget_selectedItems';
 procedure QListWidget_findItems(handle: QListWidgetH; retval: PPtrIntArray; text: PWideString; flags: QtMatchFlags); cdecl; external Qt6PasLib name 'QListWidget_findItems';
 procedure QListWidget_scrollToItem(handle: QListWidgetH; item: QListWidgetItemH; hint: QAbstractItemViewScrollHint); cdecl; external Qt6PasLib name 'QListWidget_scrollToItem';
@@ -12544,7 +12561,6 @@ function QColorDialog_options(handle: QColorDialogH): QColorDialogColorDialogOpt
 procedure QColorDialog_open(handle: QColorDialogH; receiver: QObjectH; member: PAnsiChar); cdecl; external Qt6PasLib name 'QColorDialog_open';
 procedure QColorDialog_setVisible(handle: QColorDialogH; visible: Boolean); cdecl; external Qt6PasLib name 'QColorDialog_setVisible';
 function QColorDialog_getColor(retval: PQColor; initial: PQColor; parent: QWidgetH = nil; title: PWideString = nil; options: QColorDialogColorDialogOptions = 0): boolean; cdecl; external Qt6PasLib name 'QColorDialog_getColor';
-//function QColorDialog_getRgba(rgba: QRgb = 4294967295; ok: PBoolean = nil; parent: QWidgetH = nil): QRgb; cdecl; external Qt6PasLib name 'QColorDialog_getRgba';
 function QColorDialog_customCount(): Integer; cdecl; external Qt6PasLib name 'QColorDialog_customCount';
 procedure QColorDialog_customColor(retval: PQColor; index: Integer); cdecl; external Qt6PasLib name 'QColorDialog_customColor';
 procedure QColorDialog_setCustomColor(index: Integer; color: PQColor); cdecl; external Qt6PasLib name 'QColorDialog_setCustomColor';
@@ -12557,7 +12573,7 @@ type
     QFileDialogDetail, QFileDialogList );
 
   QFileDialogFileMode = ( // QFileDialog::FileMode (1)
-    QFileDialogAnyFile, QFileDialogExistingFile, QFileDialogDirectory, QFileDialogExistingFiles, QFileDialogDirectoryOnly );
+    QFileDialogAnyFile, QFileDialogExistingFile, QFileDialogDirectory, QFileDialogExistingFiles);
 
   QFileDialogAcceptMode = ( // QFileDialog::AcceptMode (1)
     QFileDialogAcceptOpen, QFileDialogAcceptSave );
@@ -12600,14 +12616,10 @@ procedure QFileDialog_setFileMode(handle: QFileDialogH; mode: QFileDialogFileMod
 function QFileDialog_fileMode(handle: QFileDialogH): QFileDialogFileMode; cdecl; external Qt6PasLib name 'QFileDialog_fileMode';
 procedure QFileDialog_setAcceptMode(handle: QFileDialogH; mode: QFileDialogAcceptMode); cdecl; external Qt6PasLib name 'QFileDialog_setAcceptMode';
 function QFileDialog_acceptMode(handle: QFileDialogH): QFileDialogAcceptMode; cdecl; external Qt6PasLib name 'QFileDialog_acceptMode';
-//procedure QFileDialog_setReadOnly(handle: QFileDialogH; enabled: Boolean); cdecl; external Qt6PasLib name 'QFileDialog_setReadOnly';
-//function QFileDialog_isReadOnly(handle: QFileDialogH): Boolean; cdecl; external Qt6PasLib name 'QFileDialog_isReadOnly';
 procedure QFileDialog_setResolveSymlinks(handle: QFileDialogH; enabled: Boolean); cdecl; external Qt6PasLib name 'QFileDialog_setResolveSymlinks';
 function QFileDialog_resolveSymlinks(handle: QFileDialogH): Boolean; cdecl; external Qt6PasLib name 'QFileDialog_resolveSymlinks';
 procedure QFileDialog_saveState(handle: QFileDialogH; retval: QByteArrayH); cdecl; external Qt6PasLib name 'QFileDialog_saveState';
 function QFileDialog_restoreState(handle: QFileDialogH; state: QByteArrayH): Boolean; cdecl; external Qt6PasLib name 'QFileDialog_restoreState';
-// procedure QFileDialog_setConfirmOverwrite(handle: QFileDialogH; enabled: Boolean); cdecl; external Qt6PasLib name 'QFileDialog_setConfirmOverwrite';
-// function QFileDialog_confirmOverwrite(handle: QFileDialogH): Boolean; cdecl; external Qt6PasLib name 'QFileDialog_confirmOverwrite';
 procedure QFileDialog_setDefaultSuffix(handle: QFileDialogH; suffix: PWideString); cdecl; external Qt6PasLib name 'QFileDialog_setDefaultSuffix';
 procedure QFileDialog_defaultSuffix(handle: QFileDialogH; retval: PWideString); cdecl; external Qt6PasLib name 'QFileDialog_defaultSuffix';
 procedure QFileDialog_setHistory(handle: QFileDialogH; paths: QStringListH); cdecl; external Qt6PasLib name 'QFileDialog_setHistory';
@@ -14064,8 +14076,6 @@ function QStyleOptionProgressBar_textAlignment(handle : QStyleOptionProgressBarH
 procedure QStyleOptionProgressBar_setTextAlignment(handle : QStyleOptionProgressBarH; textAlignment : QtAlignment); cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_setTextAlignment';
 function QStyleOptionProgressBar_textVisible(handle : QStyleOptionProgressBarH) : Boolean; cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_textVisible';
 procedure QStyleOptionProgressBar_setTextVisible(handle : QStyleOptionProgressBarH; textVisible : Boolean); cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_setTextVisible';
-// function QStyleOptionProgressBar_orientation(handle : QStyleOptionProgressBarH) : QtOrientation; cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_orientation';
-// procedure QStyleOptionProgressBar_setOrientation(handle : QStyleOptionProgressBarH; orientation : QtOrientation); cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_setOrientation';
 function QStyleOptionProgressBar_invertedAppearance(handle : QStyleOptionProgressBarH) : Boolean; cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_invertedAppearance';
 procedure QStyleOptionProgressBar_setInvertedAppearance(handle : QStyleOptionProgressBarH; invertedAppearance : Boolean); cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_setInvertedAppearance';
 function QStyleOptionProgressBar_bottomToTop(handle : QStyleOptionProgressBarH) : Boolean; cdecl; external Qt6PasLib name 'QStyleOptionProgressBar_bottomToTop';
@@ -15072,6 +15082,13 @@ procedure QAbstractButton_hook_hook_toggled(handle: QAbstractButton_hookH; hook:
 function QPushButton_hook_Create(handle: QObjectH): QPushButton_hookH; cdecl; external Qt6PasLib name 'QPushButton_hook_Create';
 procedure QPushButton_hook_Destroy(handle: QPushButton_hookH); cdecl; external Qt6PasLib name 'QPushButton_hook_Destroy'; 
 
+function QCompleter_hook_Create(handle: QObjectH): QCompleter_hookH; cdecl; external Qt6PasLib name 'QCompleter_hook_Create';
+procedure QCompleter_hook_Destroy(handle: QCompleter_hookH); cdecl; external Qt6PasLib name 'QCompleter_hook_Destroy';
+procedure QCompleter_hook_hook_activated(handle: QCompleter_hookH; hook: QCompleter_activated_Event); cdecl; external Qt6PasLib name 'QCompleter_hook_hook_activated';
+procedure QCompleter_hook_hook_activated2(handle: QCompleter_hookH; hook: QCompleter_activated2_Event); cdecl; external Qt6PasLib name 'QCompleter_hook_hook_activated2';
+procedure QCompleter_hook_hook_highlighted(handle: QCompleter_hookH; hook: QCompleter_highlighted_Event); cdecl; external Qt6PasLib name 'QCompleter_hook_hook_highlighted';
+procedure QCompleter_hook_hook_highlighted2(handle: QCompleter_hookH; hook: QCompleter_highlighted2_Event); cdecl; external Qt6PasLib name 'QCompleter_hook_hook_highlighted2';
+
 function QLineEdit_hook_Create(handle: QObjectH): QLineEdit_hookH; cdecl; external Qt6PasLib name 'QLineEdit_hook_Create';
 procedure QLineEdit_hook_Destroy(handle: QLineEdit_hookH); cdecl; external Qt6PasLib name 'QLineEdit_hook_Destroy'; 
 procedure QLineEdit_hook_hook_textChanged(handle: QLineEdit_hookH; hook: QLineEdit_textChanged_Event); cdecl; external Qt6PasLib name 'QLineEdit_hook_hook_textChanged';
@@ -15428,6 +15445,8 @@ function QGuiApplication_screenCount: integer;
 function QGuiApplication_screenNumber(AScreen: QScreenH): integer;
 function QGuiApplication_screenFromNumber(aNumber: integer): QScreenH;
 
+procedure QPrinterInfo_supportedPaperSizes(Info: QPrinterInfoH; out APageSizes: TPtrIntArray);
+
 implementation
 uses SysUtils,Math;
 
@@ -15576,6 +15595,24 @@ begin
   end else
   begin
     Result := QFontMetrics_horizontalAdvance(handle, str, len);
+  end;
+end;
+
+procedure QPrinterInfo_supportedPaperSizes(Info: QPrinterInfoH; out APageSizes: TPtrIntArray);
+var
+  Arr: TPtrIntArray;
+  APageSize: QPageSizeH;
+  i: Integer;
+begin
+  SetLength(APageSizes{%H-}, 0);
+  QPrinterInfo_supportedPageSizes(Info, @Arr);
+  if length(Arr) = 0 then
+    exit;
+  SetLength(APageSizes, length(Arr));
+  for i := 0 to High(Arr) do
+  begin
+    APageSize := QPageSizeH(Arr[i]);
+    APageSizes[i] := QPageSize_id(APageSize);
   end;
 end;
 

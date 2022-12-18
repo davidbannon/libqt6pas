@@ -17,7 +17,7 @@
 #	libqt5pas-dev_2.10-0_armhf.deb    
 
 
-PACKVER='0'		# rev this if you re-package same binary
+PACKVER='1'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 CURRENT=`pwd`
@@ -79,13 +79,13 @@ function WriteControl () {
 
 	if [ "$1" = "DEV" ]; then
 		# echo "Installed-Size: 1445" >> BUILD/DEBIAN/control
-		echo "Depends: $PRODUCT$MAJORVER (>= $MINORVER"."$EXTRAVER)" >> BUILD/DEBIAN/control
+		echo "Depends: $PRODUCT$MAJORVER (>= $MINORVER"."$EXTRAVER), qt6-base-dev" >> BUILD/DEBIAN/control
 		echo "Section: libdevel" >> BUILD/DEBIAN/control
 		echo "Description: Development files for Qt6Pas" >> BUILD/DEBIAN/control
 	else
 
 		# echo "Installed-Size: 3314" >> BUILD/DEBIAN/control
-		echo "Depends: libc6 (>= 2.14), libgcc1 (>= 1:3.0), libqt6core6 (>= 6.2.3), libqt6gui6 (>= 6.2.3), libqt6printsupport6 (>= 6.2.3), libqt6widgets6 (>= 6.2.3), libstdc++6 (>= 5)" >> BUILD/DEBIAN/control
+		echo "Depends: libc6 (>= 2.34), libgcc1 (>= 11.3), libqt6core6 (>= 6.2.3), libqt6gui6 (>= 6.2.3), libqt6printsupport6 (>= 6.2.3), libqt6widgets6 (>= 6.2.3), libstdc++6 (>= 5), qt6-qpa-plugins" >> BUILD/DEBIAN/control
 		echo "Section: libs" >> BUILD/DEBIAN/control
 		echo "Description: Qt6 interface bindings for Pascal" >> BUILD/DEBIAN/control
 	fi
@@ -160,6 +160,9 @@ function MakeRPM () {
         echo "=== Making RPM from $PRODUCT""$FULLVER"_"$ARCH.deb ==="
         rm -Rf "$RDIR"
         fakeroot alien -r -g -v "$PRODUCT""$FULLVER"_"$ARCH"".deb"
+	# Force the same package number as the debs have
+	# Use "" so shell expands $PACKVAR, the ',*' matches anything after there
+	fakeroot sed -i "s/^Release:.*/Release: ${PACKVER}/" "$RDIR"/"$RDIR"-2.spec
         # Alien inserts requests the package create /, /usr/lib and /usr/bin and
         # the os does not apprieciate that, not surprisingly.
 	# cp "$RDIR"/"$RDIR"-2.spec ../../before.spec

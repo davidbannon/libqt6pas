@@ -15,7 +15,15 @@ README
 
 
 
+**NOTE : If you have libraries installed earlier than November 25, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.**
+
+
+
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
+
+
+
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
 
 
 
@@ -47,15 +55,19 @@ Bug reports relating to this repository's **packaging or currency** should be re
 --------
 
 
-The main library Deb package looks a bit like this - `libqt6pas6_2_0-0_amd64.deb`
+The main library Deb package looks a bit like this - `libqt6pas6_6.2.0-1_amd64.deb and libqt6pas6-dev_6.2.0-1_amd64.deb`
 
-* The package name is   libqt6pas
+   * The package name is   libqt6pas6
 
-* The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
+   * The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
 
-* The "_0" will indicate later release of the bindings, still with Qt6.2
+   * The "_0" will indicate later release of the bindings, still with Qt6.2
 
-* The "-0" is the usual debian packaging release, I'll increment that if I release new packages with same library.
+The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
+
+
+
+Note that, in this format, which conforms to the way Debian is packaging Qt6, the '6' appears three times, each refering to the same thing ! I have moved over to this format instead of the one intially used here as I found the earlier one was much harder to get error free rpms. The change of formatting will require, the user, to remove ones in the old format before installing the new format. Sorry.
 
 
 
@@ -67,37 +79,65 @@ Note that in the early release stages of this library, its version number was 6.
 
 
 
+**Repackaging**
+--------
+OK, we are now on the third packaging of the same library. All to do with version numbers and issues relating to building the library in the correct Linux Distro. Note, it does not matter which distro you **use** it in (as long as its new enough), but it must be **built** on, eg, Fedora 35 (my problem, not yours!).
+
+
+
+
+
 **Building this Library**
 --------
-**For example, on an Ubuntu 20.04 box.**
+Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
 
-**Note :** I choose U2004 because it has the Qt6.2 series (6.2.4) and its a long term support release. Below are just my notes really but might help someone else.
+   * Fedora 35 has the older Qt6 6.2.3 that the interface is based on. If built on a later Qt6, then the earlier end user systems will not be supported.
+
+   * The box where its packaged needs to be a deb based one, but not a newer eg Ubuntu because Ubuntu now has a dpkg that uses zstd compression and Debian's dpkg cannot read that.
 
 
 
-sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+**The Build  - Fedora 35**
+
+ So, its necessary to build the library on, in my case, a Fedora 35 VM, install qt6-qtbase-devel 6.2.3, pulldown the github files and -
+
+
 
 wget https://github.com/davidbannon/libqt6pas/archive/refs/heads/master.zip
 
-cd libqt6pas/cbindings
+// unzip the above somewhere
 
-qmake6 -query   // just to have a look
+    cd libqt6pas-master/cbindings
+    qmake6 -query   // just to have a look
+    qmake6   // to build the Makefile
+    make     // build the library, slow !
 
-qmake6   // to build the Makefile
 
-make     // build the library, slow !
-
-cd package
-
-// if its a repackage of same code, edit PACKVER in script
-
-./deb-package   // Make debs, RPMs and tarball
+Then copy the resulting library back somewhere where it can be used on build the debs, for me that my U2204m VM.
 
 
 
+**The Package - Ubuntu 20.04**
 
 
-**ToDo** : Set the RPM package number. more sed work on spec file !
+
+    Setup - sudo apt install qt6-base-dev alien rpm lintian, vim  // bit over 400Meg
+    Setup - a git controlled repo from github.com/davidbannon/libqt6pas
+
+
+    cp <The newly built library> libqt6pas-master/cbindings/.
+    cd libqt6pas-master/cbindings/package
+    // edit PACKVER in script, '1' if new release, inc if repackage
+    ./package-lib   // Make debs, RPMs and tarball
+
+
+Upload the packages, do the git stuff !
+
+
+
+
+
+
 
 
 
