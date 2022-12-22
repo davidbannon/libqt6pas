@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build push events (debug mode)
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+on: workflow_dispatch
+#  issues:
+    # types: [opened, edited] # only do edited so we dont retrigger ourself
+#    types: [edited]
+      
+env:
+  SOURCE: 'libQtPas_src'
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    defaults:
+      run:
+        shell: bash 
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os: ubuntu-20.04
+            name: 'Linux 64'
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+      with:
+        path: '${{ env.SOURCE }}'
+
+    - name: Test if Qt updated
+      id: test_updated     
+      run: ${{ env.SOURCE }}/cbindings/package/scripts/check4update.bash         
+#      run: |       
+
+    # This will, if the above script returned an error, assume we need to raise
+    # an issue because the versions no longer match
+    - name: create an issue
+      uses: dacbd/create-issue-action@main
+      if: ${{ failure() }}
+      with:
+        token: ${{ github.token }}
+        title: Update Required
+        body: This library needs to be updated  
+        
+    - name: decide
+      if: ${{ failure() }}
+      # apparently next line contails deprecated use of nodejs 12 ??   
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: libQtPas
+        path: result.text
+        #${{ env.SOURCE }}/result.text
