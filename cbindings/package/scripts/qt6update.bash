@@ -6,7 +6,7 @@ set -e
 # checks version number and if required, updates the relevent files.
 # No license, use as you see fit. David Bannon 2022-12-17
 
-GIT_REPO="libqt6pas"
+GIT_REPO="Pascal/libqt6pas"
 DOWNLOAD="lazarus-main-lcl-interfaces-qt6"
 DOWNLOAD_SUBS="lcl/interfaces/qt6"
 TAR_FILE="lazarus-main-lcl-interfaces-qt6-cbindings-src.tar.gz"

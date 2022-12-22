@@ -137,6 +137,30 @@ Upload the packages, do the git stuff !
 
 
 
+**Another Approach (Experimental)**
+--------
+By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to **salvadorbs** who worked out how to do this as a github action.
+
+* Build a U2004 VM, bring it up to date
+
+* Add the Qt6.2.2 PPA -
+
+* sudo add-apt-repository ppa:okirby/qt6-backports; sudo apt update;
+
+ * sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim
+
+* Then, pull down a git copy of this repo into ~/Pascal
+
+* Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts - it will update the ~/Pascal/libqt6pas source tree (if necessary).
+
+* cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !
+
+* cd down into packages and run the script package-lib, it should build the packages for you.
+
+
+
+Now, push the changes you made to the source earlier up to github, create a new release page and git it an appropriate version tag. Upload the files.
+
 
 
 
