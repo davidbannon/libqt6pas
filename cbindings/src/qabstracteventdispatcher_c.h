@@ -32,8 +32,8 @@ C_EXPORT void QAbstractEventDispatcher_installNativeEventFilter(QAbstractEventDi
 C_EXPORT void QAbstractEventDispatcher_removeNativeEventFilter(QAbstractEventDispatcherH handle, QAbstractNativeEventFilterH filterObj);
 C_EXPORT bool QAbstractEventDispatcher_filterNativeEvent(QAbstractEventDispatcherH handle, const QByteArrayH eventType, void* message, long* result);
 #if defined MSWINDOWS
-C_EXPORT bool QAbstractEventDispatcher_registerEventNotifier(QAbstractEventDispatcherH handle, QWinEventNotifierH notifier);
-C_EXPORT void QAbstractEventDispatcher_unregisterEventNotifier(QAbstractEventDispatcherH handle, QWinEventNotifierH notifier);
+//C_EXPORT bool QAbstractEventDispatcher_registerEventNotifier(QAbstractEventDispatcherH handle, QWinEventNotifierH notifier);
+//C_EXPORT void QAbstractEventDispatcher_unregisterEventNotifier(QAbstractEventDispatcherH handle, QWinEventNotifierH notifier);
 #endif
 
 #endif
