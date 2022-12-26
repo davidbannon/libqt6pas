@@ -1,10 +1,15 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build push events (debug mode)
+name: Test4Updates Qt6
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the develop branch
-on: workflow_dispatch
+on:
+  schedule:
+  # This is UTC in crontab format, minutes hours etc....
+    -cron '35 10,22 * * *' 
+  workflow_dispatch
+
 #  issues:
     # types: [opened, edited] # only do edited so we dont retrigger ourself
 #    types: [edited]
