@@ -8,7 +8,7 @@ on:
   schedule:
   # This is UTC in crontab format, minutes hours etc....
     -cron '35 10,22 * * *' 
-  workflow_dispatch
+    #workflow_dispatch
 
 #  issues:
     # types: [opened, edited] # only do edited so we dont retrigger ourself
