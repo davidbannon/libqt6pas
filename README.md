@@ -162,7 +162,7 @@ By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, a
 Now, push the changes you made to the source earlier up to github, create a new release page and git it an appropriate version tag. Upload the files.
 
 
-
+Must update every 60 days to keep workflow running.
 
 
 
