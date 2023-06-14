@@ -137,7 +137,7 @@ Upload the packages, do the git stuff !
 
 
 
-**Another Approach, in fact, how its donw now !**
+**Another Approach, in fact, how its done now !**
 --------
 By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to **salvadorbs** who worked out how to do this as a github action.
 
@@ -159,7 +159,7 @@ By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, a
 
 
 
-Now, push the changes you made to the source earlier back up to github, create a new release page and git it an appropriate version tag. Upload the files.
+Now, push the changes you made to the source earlier back up to github, create a new release page and give it an appropriate version tag. Upload the files, the tag will be created when the release is published.
 
 
 

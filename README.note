@@ -76,7 +76,7 @@ Then copy the resulting library back somewhere where it can be used on build the
 Upload the packages, do the git stuff !
 
 
-<size:large><bold>Another Approach, in fact, how its donw now !</bold></size:large>
+<size:large><bold>Another Approach, in fact, how its done now !</bold></size:large>
 By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to <bold>salvadorbs</bold> who worked out how to do this as a github action.
 <list><list-item dir="ltr">Build a U2004 VM, bring it up to date</list-item></list>
 <list><list-item dir="ltr">Add the Qt6.2.2 PPA -</list-item></list>
@@ -87,14 +87,14 @@ By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, a
 <list><list-item dir="ltr">cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !</list-item></list>
 <list><list-item dir="ltr">cd down into packages and run the script package-lib, it should build the packages for you.</list-item></list>
 
-Now, push the changes you made to the source earlier back up to github, create a new release page and git it an appropriate version tag. Upload the files.
+Now, push the changes you made to the source earlier back up to github, create a new release page and give it an appropriate version tag. Upload the files, the tag will be created when the release is published.
 
 
 
 
 </note-content></text>
-  <last-change-date>2023-06-14T17:42:11.7527471+10:00</last-change-date>
-  <last-metadata-change-date>2023-06-14T17:42:11.7527471+10:00</last-metadata-change-date>
+  <last-change-date>2023-06-14T18:19:45.4523658+10:00</last-change-date>
+  <last-metadata-change-date>2023-06-14T18:19:45.4523658+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
