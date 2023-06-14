@@ -15,7 +15,7 @@ README
 
 
 
-**NOTE : If you have libraries installed earlier than November 25, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.**
+**NOTE : If you have libraries installed earlier than November 25, 2022, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.**
 
 
 
@@ -23,15 +23,15 @@ Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://
 
 
 
-The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9 and Debian Bookworm.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In practise, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
 
 
-Its possible libraries pacman and for arm and arm64 will appear in the not too distant future.
+Its possible that libraries for pacman and for arm and arm64 will appear here if there seems a demand.
 
 
 
-libqt6pas is an interface between Lazarus and the Qt5 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
+libqt6pas is an interface between Lazarus and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
 
 
@@ -39,7 +39,7 @@ This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trun
 
 
 
-The code here will never be ahead of that in the Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
+The code here will never be ahead of that inthe Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
 
 
 
@@ -137,7 +137,7 @@ Upload the packages, do the git stuff !
 
 
 
-**Another Approach (Experimental)**
+**Another Approach, in fact, how its donw now !**
 --------
 By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to **salvadorbs** who worked out how to do this as a github action.
 
@@ -149,9 +149,9 @@ By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, a
 
  * sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim
 
-* Then, pull down a git copy of this repo into ~/Pascal
+* Then, pull down (or refresh) a git copy of this repo into ~/Pascal  (ie /home/$USER/Pascal/libqt6pas)
 
-* Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts - it will update the ~/Pascal/libqt6pas source tree (if necessary).
+* Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts directory from the user's home dir. This will update the ~/Pascal/libqt6pas source tree (if necessary).
 
 * cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !
 
@@ -159,10 +159,10 @@ By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, a
 
 
 
-Now, push the changes you made to the source earlier up to github, create a new release page and git it an appropriate version tag. Upload the files.
+Now, push the changes you made to the source earlier back up to github, create a new release page and git it an appropriate version tag. Upload the files.
 
 
-Must update every 60 days to keep workflow running.
+
 
 
 

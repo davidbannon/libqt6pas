@@ -5,7 +5,8 @@ name: Test4Updates Qt6
 on:
   schedule:
   # This is UTC in crontab format, minutes hours etc....
-    - cron: '35 10,22 * * *' 
+    - cron: '35 10 * * *' 
+  # - cron: '35 10,22 * * *'     # no, twice a day is silly, I cannot respond that quickly.
   #workflow_dispatch
 
 #  issues:

@@ -10,19 +10,19 @@
 
 <bold>Please Note :</bold> you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
 
-<bold>NOTE : If you have libraries installed earlier than November 25, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.</bold>
+<bold>NOTE : If you have libraries installed earlier than November 25, 2022, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.</bold>
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
-The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9.  Note that ones like Debian Bullseye, Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In paractis, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks !
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9 and Debian Bookworm.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In practise, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
-Its possible libraries pacman and for arm and arm64 will appear in the not too distant future.
+Its possible that libraries for pacman and for arm and arm64 will appear here if there seems a demand.
 
-libqt6pas is an interface between Lazarus and the Qt5 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
+libqt6pas is an interface between Lazarus and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
 This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trunk, master). It is very new, should be regarded as experimental but does appear to work ! At some point in time, the distros will catch up and, if you can, you should use a distro distributed verion of the library. However, its possible that the libraries here will often be ahead of your distro.
 
-The code here will never be ahead of that in the Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
+The code here will never be ahead of that inthe Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
 
 Bug reports about the library itself should be submitted to the normal Lazarus bug tracking system, https://gitlab.com/groups/freepascal.org/lazarus/-/issues
 
@@ -76,25 +76,25 @@ Then copy the resulting library back somewhere where it can be used on build the
 Upload the packages, do the git stuff !
 
 
-<size:large><bold>Another Approach (Experimental)</bold></size:large>
+<size:large><bold>Another Approach, in fact, how its donw now !</bold></size:large>
 By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to <bold>salvadorbs</bold> who worked out how to do this as a github action.
 <list><list-item dir="ltr">Build a U2004 VM, bring it up to date</list-item></list>
 <list><list-item dir="ltr">Add the Qt6.2.2 PPA -</list-item></list>
 <list><list-item dir="ltr">sudo add-apt-repository ppa:okirby/qt6-backports; sudo apt update;</list-item></list>
  <list><list-item dir="ltr">sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim</list-item></list>
-<list><list-item dir="ltr">Then, pull down a git copy of this repo into ~/Pascal</list-item></list>
-<list><list-item dir="ltr">Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts - it will update the ~/Pascal/libqt6pas source tree (if necessary).</list-item></list>
+<list><list-item dir="ltr">Then, pull down (or refresh) a git copy of this repo into ~/Pascal  (ie /home/$USER/Pascal/libqt6pas)</list-item></list>
+<list><list-item dir="ltr">Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts directory from the user's home dir. This will update the ~/Pascal/libqt6pas source tree (if necessary).</list-item></list>
 <list><list-item dir="ltr">cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !</list-item></list>
 <list><list-item dir="ltr">cd down into packages and run the script package-lib, it should build the packages for you.</list-item></list>
 
-Now, push the changes you made to the source earlier up to github, create a new release page and git it an appropriate version tag. Upload the files.
+Now, push the changes you made to the source earlier back up to github, create a new release page and git it an appropriate version tag. Upload the files.
 
 
 
 
 </note-content></text>
-  <last-change-date>2022-12-22T22:05:52.2319659+11:00</last-change-date>
-  <last-metadata-change-date>2022-12-22T22:05:52.2319659+11:00</last-metadata-change-date>
+  <last-change-date>2023-06-14T17:42:11.7527471+10:00</last-change-date>
+  <last-metadata-change-date>2023-06-14T17:42:11.7527471+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
