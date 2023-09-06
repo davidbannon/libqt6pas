@@ -3,7 +3,7 @@ Name: libqt6pas6
 Version: 
 Release: 
 Summary: Qt6 interface bindings for Pascal
-License: see /usr/share/doc/libqt6pas6/copyright
+License: LGPLv2
 Packager: David Bannon <tomboy-ng@bannons.id.au>
 URL: https://github.com/davidbannon/libqt6pas
 
@@ -29,6 +29,9 @@ Lazarus main, current release versions do not need it.
 %dir "/usr/share/doc/libqt6pas6/"
 "/usr/share/doc/libqt6pas6/changelog.gz"
 "/usr/share/doc/libqt6pas6/copyright"
+
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %changelog
 * Thu Nov 24 2022 David Bannon <tomboy-ng@bannons.id.au> - INSERT_FULL_VER

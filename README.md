@@ -7,9 +7,6 @@ README
 ========
 
 
-<sub>Don't edit this markdown file, its generated from the tomboy-ng note.</sub>
-
-
 
 **Please Note :** you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
 
@@ -88,6 +85,37 @@ OK, we are now on the third packaging of the same library. All to do with versio
 
 
 **Building this Library**
+--------
+By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to **salvadorbs** who worked out how to do this as a github action.
+
+**First Time**
+* Build a U2004 VM, bring it up to date
+
+* Add the Qt6.2.2 PPA -
+
+* sudo add-apt-repository ppa:okirby/qt6-backports; sudo apt update;
+
+* sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim
+
+* Then, pull down (or refresh) a git copy of this repo into ~/Pascal  (ie /home/$USER/Pascal/libqt6pas)
+
+* cd into cbindings and run the script, refresh.bash (it will pull down just the relevent parts of lazarus from gitlab and patch your local libqt6pas tree if necessary)
+
+* Remove any existing library and symlinks. make (to build library binary)
+
+* cd down into packages and update the whatsnew file.
+
+* run DEBEMAIL=YOUR_EMAIL bash ./package-lib, it should build the packages for you.
+
+
+
+Now, push the changes you made to the source earlier back up to github, create a new release page and give it an appropriate version tag. Upload the files, the tag will be created when the release is published.
+
+
+
+
+
+**Legacy Information**
 --------
 Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
 

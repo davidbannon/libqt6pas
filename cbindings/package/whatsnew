@@ -1,0 +1,2 @@
+added startSystemMove() & startSystemResize() to the C bindings for better wayland integration
+

@@ -109,7 +109,20 @@ function DebianPackage () {
 	
 	echo "activate-noawait ldconfig" > BUILD/DEBIAN/triggers
 	echo "libQt6Pas $MAJORVER libqt6pas$MAJORVER" > BUILD/DEBIAN/shlibs
-	gzip -knc --best changelog.libqt6pas >> BUILD/usr/share/doc/"$PRODUCT"/changelog.gz
+	
+	dch -cchangelog -v "$MAJORVER"."$MINORVER"."$EXTRAVER" -D"unstable" "Release of new version."   
+	if [ -f whatsnew ]; then
+	   	echo "---------- Including whatsnew in changelog"
+	   	while IFS= read -r Line; do
+		dch -cchangelog --append "$Line"
+	   	done < whatsnew
+	fi
+	dch -cchangelog --append "Please see Lazarus at gitlab for further change details."
+	
+	
+	
+	
+	gzip -knc --best changelog >> BUILD/usr/share/doc/"$PRODUCT"/changelog.gz
 	# ------ Make the md5sum file -----------
 	cd BUILD
 	md5sum  usr/lib/"$DIR_ARCH"/"$LIBNAME".so."$VERSION" > DEBIAN/md5sums
@@ -133,7 +146,7 @@ function DebianPackageDev () {
 	cp ../qt62.pas BUILD/usr/share/pascal/qt6/.
 	chmod 0644 BUILD/usr/share/pascal/qt6/*
     	cp copyright BUILD/usr/share/doc/"$PRODUCT-dev"/copyright
-	gzip -knc --best changelog.libqt6pas >> BUILD/usr/share/doc/"$PRODUCT-dev"/changelog.gz
+	gzip -knc --best changelog >> BUILD/usr/share/doc/"$PRODUCT-dev"/changelog.gz
  
 	# ------ Make the md5sum file -----------
 	cd BUILD
@@ -166,7 +179,7 @@ function MakeRPM () {
 		mkdir -p "$RDIR"/usr/share/doc/"$PRODUCT"-devel
 		chmod 755 "$RDIR"/usr/share/doc/"$PRODUCT"-devel
     		cp copyright "$RDIR"/usr/share/doc/"$PRODUCT"-devel/copyright
-		gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT"-devel/changelog.gz
+		gzip -knc --best changelog >> "$RDIR"/usr/share/doc/"$PRODUCT"-devel/changelog.gz
 
 		cd "$RDIR"/usr/"$RDIR_ARCH"
 		ln -s "$FULLLIBNAME" "$LIBNAME".so
@@ -182,7 +195,7 @@ function MakeRPM () {
 		mkdir -p "$RDIR"/usr/share/doc/"$PRODUCT"
 		chmod 755 "$RDIR"/usr/share/doc/"$PRODUCT"
     		cp copyright "$RDIR/usr/share/doc/"$PRODUCT"/copyright"
-		gzip -knc --best changelog.libqt6pas >> "$RDIR"/usr/share/doc/"$PRODUCT"/changelog.gz
+		gzip -knc --best changelog >> "$RDIR"/usr/share/doc/"$PRODUCT"/changelog.gz
 		cp ../"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/.
 		chmod 755 "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME"
 		ln -s -r "$RDIR"/usr/"$RDIR_ARCH"/"$FULLLIBNAME" "$RDIR"/usr/"$RDIR_ARCH"/"$LIBNAME".so."$MAJORVER"."$MINORVER"
@@ -241,7 +254,11 @@ rm -Rf "$TARNAME"
 rm -Rf BUILD
 ls -ltr
 
-# ------- RESTORE ME --------------- lintian -IiE *.deb
+echo " ======================== Debian Lintian =============================="
+lintian -IiE *.deb
+
+echo "========================= RPM Lint Results ============================"
+rpmlint -i *.rpm
 
 #echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
 

@@ -3,7 +3,7 @@ Name: libqt6pas6-devel
 Version: 
 Release: 
 Summary: Qt6 interface bindings for Pascal Devel Package
-License: see /usr/share/doc/libqt6pas6/copyright
+License: LGPLv2
 Packager: David Bannon <tomboy-ng@bannons.id.au>
 URL: https://github.com/davidbannon/libqt6pas
 Requires: INSERT_DEPEND
