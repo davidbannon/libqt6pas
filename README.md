@@ -8,7 +8,7 @@ README
 
 
 
-**Please Note :** you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
+**Please Note :** you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present. With Lazarus 3.0 released late December, its likely that this library will make it into Debian Testing (at least) quite soon. Lets hope ! 
 
 
 
