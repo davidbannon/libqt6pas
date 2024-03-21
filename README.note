@@ -8,13 +8,13 @@
 
 <size:small>Don't edit this markdown file, its generated from the tomboy-ng note.</size:small>
 
-<bold>Please Note :</bold> you probably don't need these files unless you are using Lazarus Main and Qt6. Several LTS distros will not have a viable Qt6 at present.
+<bold>Please Note :</bold> you probably  need these files if you are using Lazarus 3.0 or later.  Over time, the various distros will catch up and provide their own version of these libraries.
 
 <bold>NOTE : If you have libraries installed earlier than November 25, 2022, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.</bold>
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
-The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9 and Debian Bookworm.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In practise, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
+The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9 and Debian Bookworm or later.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In practise, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
 Its possible that libraries for pacman and for arm and arm64 will appear here if there seems a demand.
 
@@ -93,8 +93,8 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2023-06-14T18:19:45.4523658+10:00</last-change-date>
-  <last-metadata-change-date>2023-06-14T18:19:45.4523658+10:00</last-metadata-change-date>
+  <last-change-date>2024-03-21T22:34:53.5397789+11:00</last-change-date>
+  <last-metadata-change-date>2024-03-21T22:34:53.5397789+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
