@@ -262,24 +262,17 @@ echo " ======================== Debian Lintian =============================="
 lintian -IiE *.deb
 
 echo "========================= RPM Lint Results ============================"
-rpmlint  *.rpm
+rpmlint -v *.rpm
 
 #echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
 
 
 # --------------- RPM LINT Issues ------------------------------
-# Honestly, why bother to write rpmlint and then not create a list of message and what they mean ??
-# libqt6pas6.x86_64: E: unknown-key e2617741   Of course, I'm not paying RH for a key they approve of.             
-# libqt6pas6-devel.x86_64: E: no-group-tag     OK, I give up, just what group should it be ?
-# libqt6pas6-devel.x86_64: E: no-binary        No, of course not, its a dev package !
+# https://github.com/rpm-software-management/rpmlint/rpmlint/checks
+# libqt6pas6.x86_64: E: unknown-key e2617741   means the public key is not imported into my rpm dbase.             
 # libqt6pas6.x86_64: W: invalid-license LGPLv2                    What can I say ?
-# libqt6pas6-devel.x86_64: W: invalid-license LGPLv2              as above
-
-
-# libqt6pas6.x86_64: E: no-signature
-#    As near as I can tell, only OpenSUSE seems to care about signitures.
-
-# no-binary
+# libqt6pas6-devel.x86_64: E: no-binary        No, of course not, its a dev package !
+# no-binary ?
 #    Rpmlint thinks it should be "noarch" because there is no binary but 
 #    it provides a symlink, in an appropriate binary dir, to a binary !
 
