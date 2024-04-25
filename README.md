@@ -57,11 +57,11 @@ Bug reports relating to this repository's **packaging or currency** should be re
 
 The main library Deb package looks a bit like this - `libqt6pas6_6.2.8-1_amd64.deb and libqt6pas6-dev_6.2.8-1_amd64.deb`
 
-   * The package name is   libqt6pas6
+* The package name is   libqt6pas6
 
-   * The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
+* The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
 
-   * The "_8" will indicate later release of the bindings, still with Qt6.2
+* The "_8" will indicate later release of the bindings, still with Qt6.2
 
 The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
 
@@ -91,46 +91,44 @@ As almost all users will be using systems with later Qt6 than the origional targ
 
 Start with a clean U2204.
 
-   * `$> sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg`
+* `$> sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg`
 
-   * `$> mkdir ~/Pascal; cd ~/Pascal`
+* `$> mkdir ~/Pascal; cd ~/Pascal`
 
-   * `git clone https://github.com/davidbannon/libqt6pas.git`
+* `git clone https://github.com/davidbannon/libqt6pas.git`
 
-   * `create a ~/.rpmmacro`
+* `create a ~/.rpmmacro`
 
-      * `%_signature gpg`
+   * `%_signature gpg`
 
-      * `%_gpg_name David Bannon`
+   * `%_gpg_name David Bannon`
 
-      * `%__gpg /usr/bin/gpg`
+   * `%__gpg /usr/bin/gpg`
 
-   * `and make sure the corresponding gpg key is in gpg (in my case ...617741).`
+* `and make sure the corresponding gpg key is in gpg (in my case ...617741).`
 
-   * `note that on U2204, I needed to set path to the gpg binary WITh two underscores, not one like other lines ??`
-
-
+* `note that on U2204, I needed to set path to the gpg binary with TWO underscores, not one like other lines ??`
 
 
 
     If already setup.
 
 
-   * `$> cd ~/Pascal/libqt6pas/cbindings/scripts`
+* `$> cd ~/Pascal/libqt6pas/cbindings/scripts`
 
-   * `$> bash ./qt6update.bash           # this will update your repo directly from the official master.`
+* `$> bash ./qt6update.bash           # this will update your repo directly from the official master.`
 
-   * `above script will report, if a new build is necessary, do -`
+* `above script will report, if a new build is necessary, do -`
 
-   * `$> cd ../../`
+* `$> cd ../../`
 
-   * `$> qmake6; make                   # wait a long time`
+* `$> qmake6; make                   # wait a long time`
 
-   * $> cd package
+* $> cd package
 
-   * update the whatsnew file
+* update the whatsnew file
 
-   * $> EMAIL=YOU@your.email  bash ./package-lib
+* $> EMAIL=YOU@your.email  bash ./package-lib
 
 
 
