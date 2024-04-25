@@ -40,31 +40,29 @@ Note that, in this format, which conforms to the way Debian is packaging Qt6, th
 
 The library itself, is called <monospace>libQt6Pas.so.6.2.8</monospace>, note the upper case letters, its a Qt thing apparently. It will normally have symlinks from libQt6Pas.so.6.2 and  libQt6Pas.so.6. If you have the -dev package installed, it will add a symlink from libQt6Pas.so
 
-
-
 As almost all users will be using systems with later Qt6 than the origional target 6.2.3 LTS version, I'm now building this on an Ubuntu 22.04 system that uses Qt6 6.2.4. Sorry, this may bite you if you are using an earlier Qt6, if thats the case, sorry, you will need to build it your self.
 
 
 <size:large><bold>Building this Library</bold></size:large>
 <bold>(Info for the maintainer.)</bold>
 Start with a clean U2204.
-<list><list-item dir="ltr"><monospace>$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>$&gt; mkdir ~/Pascal; cd ~/Pascal</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>git clone https://github.com/davidbannon/libqt6pas.git</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>create a ~/.rpmmacro</monospace></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%_signature gpg</monospace></list-item></list></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%_gpg_name David Bannon</monospace></list-item></list></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%__gpg /usr/bin/gpg</monospace></list-item></list></list-item></list>
-<list><list-item dir="ltr"><monospace>and make sure the corresponding gpg key is in gpg (in my case ...617741).</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>note that on U2204, I needed to set path to the gpg binary with TWO underscores, not one like other lines ??</monospace></list-item></list>
+<list><list-item dir="ltr">$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</list-item></list>
+<list><list-item dir="ltr">$&gt; mkdir ~/Pascal; cd ~/Pascal</list-item></list>
+<list><list-item dir="ltr">git clone https://github.com/davidbannon/libqt6pas.git</list-item></list>
+<list><list-item dir="ltr">create a ~/.rpmmacro</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">%_signature gpg</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">%_gpg_name David Bannon</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">%__gpg /usr/bin/gpg</list-item></list></list-item></list>
+<list><list-item dir="ltr">and make sure the corresponding gpg key is in gpg (in my case ...617741).</list-item></list>
+<list><list-item dir="ltr">note that on U2204, I needed to set path to the gpg binary with TWO underscores, not one like other lines ??</list-item></list>
 
-<monospace>If already setup.</monospace>
+If already setup.
 
-<list><list-item dir="ltr"><monospace>$&gt; cd ~/Pascal/libqt6pas/cbindings/scripts</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master.</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>above script will report, if a new build is necessary, do -</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>$&gt; cd ../../</monospace></list-item></list>
-<list><list-item dir="ltr"><monospace>$&gt; qmake6; make                   # wait a long time</monospace></list-item></list>
+<list><list-item dir="ltr">$&gt; cd ~/Pascal/libqt6pas/cbindings/scripts</list-item></list>
+<list><list-item dir="ltr">$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master.</list-item></list>
+<list><list-item dir="ltr">above script will report, if a new build is necessary, do -</list-item></list>
+<list><list-item dir="ltr">$&gt; cd ../../</list-item></list>
+<list><list-item dir="ltr">$&gt; qmake6; make                   # wait a long time</list-item></list>
 <list><list-item dir="ltr">$&gt; cd package</list-item></list>
 <list><list-item dir="ltr">update the whatsnew file</list-item></list>
 <list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib</list-item></list>
@@ -125,8 +123,8 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2024-04-25T20:56:28.9565497+10:00</last-change-date>
-  <last-metadata-change-date>2024-04-25T20:56:28.9565497+10:00</last-metadata-change-date>
+  <last-change-date>2024-04-25T21:07:46.7877268+10:00</last-change-date>
+  <last-metadata-change-date>2024-04-25T21:07:46.7877268+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
