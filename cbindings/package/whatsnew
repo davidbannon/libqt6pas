@@ -1,2 +1,1 @@
-added startSystemMove() & startSystemResize() to the C bindings for better wayland integration
-
+remove bindings to Qt6Pas_QString_isSimpleText, as needed by Qt6 6.7.0 (and later ?)

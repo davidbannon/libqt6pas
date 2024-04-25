@@ -4,6 +4,7 @@ Version:
 Release: 
 Summary: Qt6 interface bindings for Pascal
 License: LGPLv2
+Group: System
 Packager: David Bannon <tomboy-ng@bannons.id.au>
 URL: https://github.com/davidbannon/libqt6pas
 

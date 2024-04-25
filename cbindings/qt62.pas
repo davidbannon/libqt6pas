@@ -31,7 +31,7 @@ const
 {DEFINE QT_6_2_0}
   
 {$IFDEF MSWINDOWS}
-  Qt6PasLib = 'Qt6Pas1.dll';
+  Qt6PasLib = 'Qt6Pas6.dll';
 {$ELSE}
   {$IFDEF DARWIN}
     Qt6PasLib = '';
@@ -932,12 +932,6 @@ type
     QtBottomLeftCorner = $00002,
     QtBottomRightCorner = $00003 );
 
-  QtEdge = (  //Qt::Edge (2)
-    QtTopEdge = $00001,
-    QtLeftEdge = $00002,
-    QtRightEdge = $00004,
-    QtBottomEdge = $00008 );
-
   QtConnectionType = (  //Qt::ConnectionType (2)
     QtAutoConnection,
     QtDirectConnection,
@@ -976,6 +970,15 @@ const
   QtImhUrlCharactersOnly =   $400000;
   QtImhLatinOnly =   $800000;
   QtImhExclusiveInputMask =   $ffff0000;
+
+type
+  QtEdge = cardinal;
+
+const
+  QtTopEdge = $00001;
+  QtLeftEdge = $00002;
+  QtRightEdge = $00004;
+  QtBottomEdge = $00008;
 
 
 type
@@ -3211,7 +3214,6 @@ procedure QString_push_back(handle: QStringH; s: PWideString); cdecl; external Q
 procedure QString_push_front(handle: QStringH; c: PWideChar); cdecl; external Qt6PasLib name 'QString_push_front';
 procedure QString_push_front(handle: QStringH; s: PWideString); cdecl; external Qt6PasLib name 'QString_push_front2';
 function QString_isNull(handle: QStringH): Boolean; cdecl; external Qt6PasLib name 'QString_isNull';
-function QString_isSimpleText(handle: QStringH): Boolean; cdecl; external Qt6PasLib name 'QString_isSimpleText';
 function QString_isRightToLeft(handle: QStringH): Boolean; cdecl; external Qt6PasLib name 'QString_isRightToLeft';
 function QString_Create(size: Integer; AnonParam2: QtInitialization): QStringH; cdecl; external Qt6PasLib name 'QString_Create8';
 procedure QString_chopped(handle: QStringH; len: integer; retval: PWideString); cdecl; external Qt6PasLib name 'QString_chopped';
@@ -5909,6 +5911,8 @@ procedure QWindow_setMaximumWidth(handle: QWindowH; w: integer); cdecl; external
 procedure QWindow_setMaximumHeight(handle: QWindowH; h: integer); cdecl; external Qt6PasLib name 'QWindow_setMaximumHeight';
 procedure QWindow_alert(handle: QWindowH; msec: integer); cdecl; external Qt6PasLib name 'QWindow_alert';
 procedure QWindow_requestUpdate(handle: QWindowH); cdecl; external Qt6PasLib name 'QWindow_requestUpdate';
+function QWindow_startSystemMove(handle: QWindowH): boolean; cdecl; external Qt6PasLib name 'QWindow_startSystemMove';
+function QWindow_startSystemResize(handle: QWindowH; edges: QtEdge): boolean; cdecl; external Qt6PasLib name 'QWindow_startSystemResize';
 
 type
   QWindow_screenChanged_Event = procedure (screen: QScreenH) of object cdecl;
@@ -15711,7 +15715,7 @@ end;
 // QReal Array Access from c-code
 function GetQRealArrayAddr(var PArr : TQRealArray): PPtrInt; cdecl; export;
 begin
-  Result := @PArr[0];
+  Result := PPtrInt(@PArr[0]);
 end;
 
 function GetQRealArrayLength(var PArr: TQRealArray): Integer; cdecl; export;

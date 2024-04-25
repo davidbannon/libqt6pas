@@ -110,6 +110,7 @@ function DebianPackage () {
 	echo "activate-noawait ldconfig" > BUILD/DEBIAN/triggers
 	echo "libQt6Pas $MAJORVER libqt6pas$MAJORVER" > BUILD/DEBIAN/shlibs
 	
+	rm changelog.dch
 	dch -cchangelog -v "$MAJORVER"."$MINORVER"."$EXTRAVER" -D"unstable" "Release of new version."   
 	if [ -f whatsnew ]; then
 	   	echo "---------- Including whatsnew in changelog"
@@ -258,27 +259,28 @@ echo " ======================== Debian Lintian =============================="
 lintian -IiE *.deb
 
 echo "========================= RPM Lint Results ============================"
-rpmlint -i *.rpm
+rpmlint  *.rpm
 
 #echo " === OK, now make the rpms with   fakeroot bash ./rpm-package.bash   <enter> ==="
 
 
 # --------------- RPM LINT Issues ------------------------------
+# Honestly, why bother to write rpmlint and then not create a list of message and what they mean ??
 
-# libqt6pas6.x86_64: E: library-without-ldconfig-postin
-# libqt6pas6.x86_64: E: library-without-ldconfig-postun
-#    Not required anymore -
-#    https://fedoraproject.org/wiki/Changes/Removing_ldconfig_scriptlets
+# libqt6pas6.x86_64: E: no-signature           yes, I agree, I should sign...
+# libqt6pas6-devel.x86_64: E: no-signature     as above
+# libqt6pas6-devel.x86_64: E: no-group-tag     OK, I give up, just what group should it be ?
+# libqt6pas6-devel.x86_64: E: no-binary        No, of course not, its a dev package !
+# libqt6pas6.x86_64: W: invalid-license LGPLv2                    What can I say ?
+# libqt6pas6-devel.x86_64: W: invalid-license LGPLv2              as above
 
-# libqt6pas6.x86_64: W: invalid-license see /usr/share/doc/libqt6pas6/copyright
-#    The license is fine, its just that rpmlint cannot parse it.
 
 # libqt6pas6.x86_64: E: no-signature
 #    As near as I can tell, only OpenSUSE seems to care about signitures.
 
 # no-binary
 #    Rpmlint thinks it should be "noarch" because there is no binary but 
-#    it provides a symling, in an appropriate binary dir, to a binary !
+#    it provides a symlink, in an appropriate binary dir, to a binary !
 
 # --------------- Lintian Issues ---------------------------------
 

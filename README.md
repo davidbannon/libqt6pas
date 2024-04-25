@@ -11,7 +11,7 @@ README
 
 
 
-**Please Note :** you probably  need these files if you are using Lazarus 3.0 or later.  Over time, the various distros will catch up and provide their own version of these libraries.
+**Please Note :** As of early 2024, you probably  need these files if you are using Lazarus 3.0 or later.  Over time, the various distros will catch up and provide their own version of these libraries.
 
 
 
@@ -23,7 +23,7 @@ Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://
 
 
 
-The packages should work on distributions like Ubuntu 21.10, Fedora 35 and RH EL9 and Debian Bookworm or later.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6. In practise, you need a Qt6 6.2.3 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
+The packages should work on distributions like Ubuntu 22.04, Fedora 36 and Debian Bookworm or later.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6 or a sufficently up to date Qt6.. In practise, you need a Qt6 6.2.4 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
 
 
@@ -31,11 +31,11 @@ Its possible that libraries for pacman and for arm and arm64 will appear here if
 
 
 
-libqt6pas is an interface between Lazarus and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
+libqt6pas is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
 
 
-This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trunk, master). It is very new, should be regarded as experimental but does appear to work ! At some point in time, the distros will catch up and, if you can, you should use a distro distributed verion of the library. However, its possible that the libraries here will often be ahead of your distro.
+This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trunk, master). It is very new, should be regarded as experimental but does appear to work and is extensivly tested ! At some point in time, the distros will catch up and, if you can, you should use a distro distributed verion of the library. However, its possible that the libraries here will often be ahead of your distro.
 
 
 
@@ -55,13 +55,13 @@ Bug reports relating to this repository's **packaging or currency** should be re
 --------
 
 
-The main library Deb package looks a bit like this - `libqt6pas6_6.2.0-1_amd64.deb and libqt6pas6-dev_6.2.0-1_amd64.deb`
+The main library Deb package looks a bit like this - `libqt6pas6_6.2.8-1_amd64.deb and libqt6pas6-dev_6.2.8-1_amd64.deb`
 
    * The package name is   libqt6pas6
 
    * The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.
 
-   * The "_0" will indicate later release of the bindings, still with Qt6.2
+   * The "_8" will indicate later release of the bindings, still with Qt6.2
 
 The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
 
@@ -71,17 +71,15 @@ Note that, in this format, which conforms to the way Debian is packaging Qt6, th
 
 
 
-The library itself, is called `libQt6Pas.so.6.2.0`, note the upper case letters, its a Qt thing apparently. It will normally have symlinks from libQt6Pas.so.6.2 and  libQt6Pas.so.6. If you have the -dev package installed, it will add a symlink from libQt6Pas.so
+The library itself, is called `libQt6Pas.so.6.2.8`, note the upper case letters, its a Qt thing apparently. It will normally have symlinks from libQt6Pas.so.6.2 and  libQt6Pas.so.6. If you have the -dev package installed, it will add a symlink from libQt6Pas.so
 
 
 
-Note that in the early release stages of this library, its version number was 6.2.3 (reflecting the exact release it was first built on). That was wrong, you should remove and discard that package. It number conflicts ....
 
 
 
-**Repackaging**
---------
-OK, we are now on the third packaging of the same library. All to do with version numbers and issues relating to building the library in the correct Linux Distro. Note, it does not matter which distro you **use** it in (as long as its new enough), but it must be **built** on, eg, Fedora 35 (my problem, not yours!).
+
+As almost all users will be using systems with later Qt6 than the origional target 6.2.3 LTS version, I'm now building this on an Ubuntu 22.04 system that uses Qt6 6.2.4. Sorry, this may bite you if you are using an earlier Qt6, if thats the case, sorry, you will need to build it your self.
 
 
 
@@ -89,7 +87,52 @@ OK, we are now on the third packaging of the same library. All to do with versio
 
 **Building this Library**
 --------
-Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
+**(Info for the maintainer.)**
+
+Start with a clean U2204.
+
+   * `$> sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg`
+
+   * `$> mkdir ~/Pascal; cd ~/Pascal`
+
+   * `git clone https://github.com/davidbannon/libqt6pas.git`
+
+
+
+    If already setup.
+
+
+   * `$> cd ~/Pascal/libqt6pas/cbindings/scripts`
+
+   * `$> bash ./qt6update.bash           # this will update your repo directly from the official master.`
+
+   * `above script will report, if a new build is necessary, do -`
+
+   * `$> cd ../../`
+
+   * `$> qmake6; make                   # wait a long time`
+
+   * $> cd package
+
+   * update the whatsnew file
+
+   * $> EMAIL=YOU@your.email  bash ./package-lib
+
+
+
+Then push code up to this git repo, create a new release page, assign a new (but uncreated) tag, upload the new libraries and release.
+
+
+
+
+
+**Legacy Information**
+--------
+
+
+**Most of this no longer applies, its here just in case its helpful.**
+
+Most of this no longer applies, its here just in case its helpful.Right now, seems the only way to make a generic library package is to make the Library on a Fedora 35 box and then package on an Ubuntu 20.04 box. This is because
 
    * Fedora 35 has the older Qt6 6.2.3 that the interface is based on. If built on a later Qt6, then the earlier end user systems will not be supported.
 
@@ -137,25 +180,25 @@ Upload the packages, do the git stuff !
 
 
 
-**Another Approach, in fact, how its done now !**
+**Another Approach**
 --------
 By using an experimental PPA we can install Qt6.2.2 (not 6.2.3) on a U2004 so, avoid the dreaded libc and get a Qt6 almost exactly as Zeljko want. So far, seems to work. This model is a credit to **salvadorbs** who worked out how to do this as a github action.
 
-* Build a U2004 VM, bring it up to date
+   * Build a U2004 VM, bring it up to date
 
-* Add the Qt6.2.2 PPA -
+   * Add the Qt6.2.2 PPA -
 
-* sudo add-apt-repository ppa:okirby/qt6-backports; sudo apt update;
+   * sudo add-apt-repository ppa:okirby/qt6-backports; sudo apt update;
 
- * sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim
+    * sudo apt install qt6-base-dev build-essential libgl1-mesa-dev rpm lintian devscripts vim
 
-* Then, pull down (or refresh) a git copy of this repo into ~/Pascal  (ie /home/$USER/Pascal/libqt6pas)
+   * Then, pull down (or refresh) a git copy of this repo into ~/Pascal  (ie /home/$USER/Pascal/libqt6pas)
 
-* Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts directory from the user's home dir. This will update the ~/Pascal/libqt6pas source tree (if necessary).
+   * Run the script,  qt6update.bash in the above, ~/Pascal/cbindings/package/scripts directory from the user's home dir. This will update the ~/Pascal/libqt6pas source tree (if necessary).
 
-* cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !
+   * cd down into the ~/Pascal/libqt6pas/cbindings and run qmake6; make to build the library, slow !
 
-* cd down into packages and run the script package-lib, it should build the packages for you.
+   * cd down into packages and run the script package-lib, it should build the packages for you.
 
 
 
