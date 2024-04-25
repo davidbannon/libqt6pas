@@ -255,6 +255,9 @@ rm -Rf "$TARNAME"
 rm -Rf BUILD
 ls -ltr
 
+echo "Davo - use long pass phrase !"
+for i in `ls -b *.rpm`; do rpm --addsign "$i"; echo "signed $i"; done
+
 echo " ======================== Debian Lintian =============================="
 lintian -IiE *.deb
 
@@ -266,9 +269,7 @@ rpmlint  *.rpm
 
 # --------------- RPM LINT Issues ------------------------------
 # Honestly, why bother to write rpmlint and then not create a list of message and what they mean ??
-
-# libqt6pas6.x86_64: E: no-signature           yes, I agree, I should sign...
-# libqt6pas6-devel.x86_64: E: no-signature     as above
+# libqt6pas6.x86_64: E: unknown-key e2617741   Of course, I'm not paying RH for a key they approve of.             
 # libqt6pas6-devel.x86_64: E: no-group-tag     OK, I give up, just what group should it be ?
 # libqt6pas6-devel.x86_64: E: no-binary        No, of course not, its a dev package !
 # libqt6pas6.x86_64: W: invalid-license LGPLv2                    What can I say ?

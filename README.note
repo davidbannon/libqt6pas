@@ -51,6 +51,13 @@ Start with a clean U2204.
 <list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</monospace></list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>$&gt; mkdir ~/Pascal; cd ~/Pascal</monospace></list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>git clone https://github.com/davidbannon/libqt6pas.git</monospace></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>create a ~/.rpmmacro</monospace></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%_signature gpg</monospace></list-item></list></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%_gpg_name David Bannon</monospace></list-item></list></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>%__gpg /usr/bin/gpg</monospace></list-item></list></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>and make sure the corresponding gpg key is in gpg (in my case ...617741).</monospace></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><monospace>note that on U2204, I needed to set path to the gpg binary WITh two underscores, not one like other lines ??</monospace></list-item></list></list-item></list>
+
 
 <monospace>If already setup.</monospace>
 
@@ -64,6 +71,10 @@ Start with a clean U2204.
 <list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib</list-item></list></list-item></list>
 
 Then push code up to this git repo, create a new release page, assign a new (but uncreated) tag, upload the new libraries and release.
+
+<size:large><bold>Ref</bold></size:large>
+<list><list-item dir="ltr">https://opensource.com/article/18/9/how-build-rpm-packages</list-item></list>
+
 
 
 <size:large><bold>Legacy Information</bold></size:large>
@@ -115,14 +126,14 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2024-04-25T16:27:17.8563985+10:00</last-change-date>
-  <last-metadata-change-date>2024-04-25T16:27:17.8563985+10:00</last-metadata-change-date>
+  <last-change-date>2024-04-25T20:13:23.7166347+10:00</last-change-date>
+  <last-metadata-change-date>2024-04-25T20:13:23.7166347+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
   <width>1000</width>
   <height>626</height>
-  <x>137</x>
-  <y>29</y>
+  <x>278</x>
+  <y>45</y>
   <open-on-startup>False</open-on-startup>
 </note>

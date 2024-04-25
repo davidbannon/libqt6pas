@@ -97,6 +97,20 @@ Start with a clean U2204.
 
    * `git clone https://github.com/davidbannon/libqt6pas.git`
 
+   * `create a ~/.rpmmacro`
+
+      * `%_signature gpg`
+
+      * `%_gpg_name David Bannon`
+
+      * `%__gpg /usr/bin/gpg`
+
+   * `and make sure the corresponding gpg key is in gpg (in my case ...617741).`
+
+   * `note that on U2204, I needed to set path to the gpg binary WITh two underscores, not one like other lines ??`
+
+
+
 
 
     If already setup.
@@ -121,6 +135,14 @@ Start with a clean U2204.
 
 
 Then push code up to this git repo, create a new release page, assign a new (but uncreated) tag, upload the new libraries and release.
+
+
+
+**Ref**
+--------
+* https://opensource.com/article/18/9/how-build-rpm-packages
+
+
 
 
 
