@@ -1,1 +1,1 @@
-remove bindings to Qt6Pas_QString_isSimpleText, as needed by Qt6 6.7.0 (and later ?)
+Update packaging only to support Qt6.2.2 (rather than just Qt6.2.3)
