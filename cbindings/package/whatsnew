@@ -1,1 +1,2 @@
-Update packaging only to support Qt6.2.2 (rather than just Qt6.2.3)
+Fixed wrong QFontMetricsF_forizontalAdvance() output (2024-11-15)
+Fixed bug in bindings (2024-11-21)

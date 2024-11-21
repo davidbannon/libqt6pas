@@ -23,7 +23,7 @@
 # 	The '0' in above will be rev'ed by every change Z makes to the interface, the 6.2 is the LTS Qt6 release
 
 
-PACKVER='2'		# should start at '1', rev if you re-package same binary
+PACKVER='1'		# should start at '1', rev if you re-package same binary
 
 LIBNAME=libQt6Pas
 PRODUCT="libqt6pas6"	# note lib has upper case letters, this appears in Package name, two sixes but gets another 

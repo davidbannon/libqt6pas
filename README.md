@@ -11,11 +11,7 @@ README
 
 
 
-**Please Note :** As of early 2024, you probably  need these files if you are using Lazarus 3.0 or later.  Over time, the various distros will catch up and provide their own version of these libraries.
-
-
-
-**NOTE : If you have libraries installed earlier than November 25, 2022, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.**
+**Please Note :** As of late 2024, you probably  need these files if you are using Lazarus 3.0 or later on a machine without up to date libqt6pas files.  Over time, the various distros are catching up and provide their own version of these libraries. If you are using an Arch based Linux, Debian Trixie, latest Fedora, you don't need these files.
 
 
 
@@ -27,11 +23,11 @@ The packages should work on distributions like Ubuntu 22.04, Fedora 36 and Debia
 
 
 
-Its possible that libraries for pacman and for arm and arm64 will appear here if there seems a demand.
+Its possible that libraries for pacman and for arm and arm64 will appear here soon.
 
 
 
-libqt6pas is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
+**libqt6pas** is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
 
 
@@ -39,7 +35,7 @@ This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trun
 
 
 
-The code here will never be ahead of that inthe Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
+The code here will never be ahead of that in the Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
 
 
 
@@ -83,13 +79,26 @@ As almost all users will be using systems with later Qt6 than the origional targ
 
 **Building this Library**
 --------
+
+
+**Updated, Nov 2024**
+
 **(Info for the maintainer.)**
+
+
+
+I now build these libraries (for x86-64) on a U20.04 VM to ensure backwards compatibility with glibc. However, U20.04 does not have a suitable Qt6, so, get one from this PPA - http://ppa.launchpad.net/okirby/qt6-backports/ubuntu - a file called /etc/apt/sources.list.d/okirby-ubuntu-qt6-backports-focal.list must contain the following -
+
+
+
+    deb http://ppa.launchpad.net/okirby/qt6-backports/ubuntu focal main
+
 
 Start with a clean U2204.
 
 * $> sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg
 
-* $> mkdir ~/Pascal; cd ~/Pascal
+* $> mkdir ~/LibQt; cd ~/LibQt
 
 * git clone https://github.com/davidbannon/libqt6pas.git
 
@@ -111,11 +120,9 @@ If already setup.
 
 
 
-* $> cd ~/Pascal/libqt6pas/cbindings/scripts
+* $> cd ~/LibQt/libqt6pas/cbindings/scripts
 
-* $> bash ./qt6update.bash           # this will update your repo directly from the official master.
-
-* above script will report, if a new build is necessary, do -
+* $> bash ./qt6update.bash           # this will update your repo directly from the official master if necessary
 
 * $> cd ../../
 
@@ -125,7 +132,7 @@ If already setup.
 
 * update the whatsnew file
 
-* $> EMAIL=YOU@your.email  bash ./package-lib
+* $> EMAIL=YOU@your.email  bash ./package-lib   #  (I use the <tb>@<*.id.au> one
 
 
 
@@ -136,6 +143,8 @@ Then push code up to this git repo, create a new release page, assign a new (but
 **Ref**
 --------
 * https://opensource.com/article/18/9/how-build-rpm-packages
+
+* https://launchpad.net/~okirby/+archive/ubuntu/qt6-backports   // get Qt6 6.2.2 on Ubuntu 20.04
 
 
 

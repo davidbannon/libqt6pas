@@ -6,7 +6,8 @@ set -e
 # checks version number and if required, updates the relevent files.
 # No license, use as you see fit. David Bannon 2022-12-17
 
-GIT_REPO="Pascal/libqt6pas"
+# GIT_REPO="Pascal/libqt6pas"
+GIT_REPO="$HOME/LibQt/libqt6pas"	# this is where the unoffical github repo is replicated
 DOWNLOAD="lazarus-main-lcl-interfaces-qt6"
 DOWNLOAD_SUBS="lcl/interfaces/qt6"
 TAR_FILE="lazarus-main-lcl-interfaces-qt6-cbindings-src.tar.gz"
@@ -16,13 +17,13 @@ if [ "$DOWNLOAD" == "" ]; then
 	echo "ERROR - Download dir not defined"
 	exit
 fi
-cd
+cd			# move to my home dir
 if [ -e "$TAR_FILE" ]; then
 	rm "$TAR_FILE"
 	echo "Removing old download"
 fi
 
-if [ -d "$DOWNLOAD" ]; then
+if [ -d "$DOWNLOAD" ]; then	# clear away an old dir before we download from gitlab
 	rm -Rf "$DOWNLOAD"
 	echo "Removing old download dir"
 else
@@ -31,11 +32,17 @@ fi
 
 wget -O "$TAR_FILE" https://gitlab.com/freepascal.org/lazarus/lazarus/-/archive/main/lazarus-main.tar.gz?path=lcl/interfaces/qt6
 tar xzf "$TAR_FILE"
+
+echo "----- OK, have downloaded, lets check version numbers"
 grep VER_PAT "$DOWNLOAD"/"$DOWNLOAD_SUBS"/cbindings/Qt6Pas.pro
 grep VER_PAT "$GIT_REPO"/cbindings/Qt6Pas.pro
 
+echo "----- Hope that made sense"
+
 DOWN_VER=`grep VER_PAT "$DOWNLOAD"/"$DOWNLOAD_SUBS"/cbindings/Qt6Pas.pro`
 GIT_VER=`grep VER_PAT "$GIT_REPO"/cbindings/Qt6Pas.pro`
+
+echo "----- Comparing $DOWN_VER with $GIt_VER "
 
 if [ "$DOWN_VER" != "$GIT_VER" ]; then
 	echo "Update required"

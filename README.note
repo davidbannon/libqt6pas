@@ -8,21 +8,19 @@
 
 <size:small>Don't edit this markdown file, its generated from the tomboy-ng note.</size:small>
 
-<bold>Please Note :</bold> As of early 2024, you probably  need these files if you are using Lazarus 3.0 or later.  Over time, the various distros will catch up and provide their own version of these libraries.
-
-<bold>NOTE : If you have libraries installed earlier than November 25, 2022, earlier than libqt6pas6_6.2.2-2_amd64.deb then you MUST remove the old before installing the new ones (if and only if you need the new ones). See below section Names and Numbering.</bold>
+<bold>Please Note :</bold> As of late 2024, you probably  need these files if you are using Lazarus 3.0 or later on a machine without up to date libqt6pas files.  Over time, the various distros are catching up and provide their own version of these libraries. If you are using an Arch based Linux, Debian Trixie, latest Fedora, you don't need these files.
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
 The packages should work on distributions like Ubuntu 22.04, Fedora 36 and Debian Bookworm or later.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6 or a sufficently up to date Qt6.. In practise, you need a Qt6 6.2.4 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
-Its possible that libraries for pacman and for arm and arm64 will appear here if there seems a demand.
+Its possible that libraries for pacman and for arm and arm64 will appear here soon.
 
-libqt6pas is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
+<bold>libqt6pas</bold> is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
 This is an unofficial copy of the libqt6pas code from the Lazarus Main (aka Trunk, master). It is very new, should be regarded as experimental but does appear to work and is extensivly tested ! At some point in time, the distros will catch up and, if you can, you should use a distro distributed verion of the library. However, its possible that the libraries here will often be ahead of your distro.
 
-The code here will never be ahead of that inthe Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
+The code here will never be ahead of that in the Lazarus trunk but will track it, superficially tested as changes are made to the relevant content in Lazarus Main.
 
 Bug reports about the library itself should be submitted to the normal Lazarus bug tracking system, https://gitlab.com/groups/freepascal.org/lazarus/-/issues
 
@@ -44,10 +42,17 @@ As almost all users will be using systems with later Qt6 than the origional targ
 
 
 <size:large><bold>Building this Library</bold></size:large>
+
+<bold>Updated, Nov 2024</bold>
 <bold>(Info for the maintainer.)</bold>
+
+I now build these libraries (for x86-64) on a U20.04 VM to ensure backwards compatibility with glibc. However, U20.04 does not have a suitable Qt6, so, get one from this PPA - http://ppa.launchpad.net/okirby/qt6-backports/ubuntu - a file called /etc/apt/sources.list.d/okirby-ubuntu-qt6-backports-focal.list must contain the following -
+
+<monospace>deb http://ppa.launchpad.net/okirby/qt6-backports/ubuntu focal main</monospace>
+
 Start with a clean U2204.
 <list><list-item dir="ltr">$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</list-item></list>
-<list><list-item dir="ltr">$&gt; mkdir ~/Pascal; cd ~/Pascal</list-item></list>
+<list><list-item dir="ltr">$&gt; mkdir ~/LibQt; cd ~/LibQt</list-item></list>
 <list><list-item dir="ltr">git clone https://github.com/davidbannon/libqt6pas.git</list-item></list>
 <list><list-item dir="ltr">create a ~/.rpmmacro</list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">%_signature gpg</list-item></list></list-item></list>
@@ -58,19 +63,19 @@ Start with a clean U2204.
 
 If already setup.
 
-<list><list-item dir="ltr">$&gt; cd ~/Pascal/libqt6pas/cbindings/scripts</list-item></list>
-<list><list-item dir="ltr">$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master.</list-item></list>
-<list><list-item dir="ltr">above script will report, if a new build is necessary, do -</list-item></list>
+<list><list-item dir="ltr">$&gt; cd ~/LibQt/libqt6pas/cbindings/scripts</list-item></list>
+<list><list-item dir="ltr">$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master if necessary</list-item></list>
 <list><list-item dir="ltr">$&gt; cd ../../</list-item></list>
 <list><list-item dir="ltr">$&gt; qmake6; make                   # wait a long time</list-item></list>
 <list><list-item dir="ltr">$&gt; cd package</list-item></list>
 <list><list-item dir="ltr">update the whatsnew file</list-item></list>
-<list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib</list-item></list>
+<list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib   #  (I use the &lt;tb&gt;@&lt;*.id.au&gt; one</list-item></list>
 
 Then push code up to this git repo, create a new release page, assign a new (but uncreated) tag, upload the new libraries and release.
 
 <size:large><bold>Ref</bold></size:large>
 <list><list-item dir="ltr">https://opensource.com/article/18/9/how-build-rpm-packages</list-item></list>
+<list><list-item dir="ltr">https://launchpad.net/~okirby/+archive/ubuntu/qt6-backports   // get Qt6 6.2.2 on Ubuntu 20.04</list-item></list>
 
 
 
@@ -123,14 +128,14 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2024-04-25T21:07:46.7877268+10:00</last-change-date>
-  <last-metadata-change-date>2024-04-25T21:07:46.7877268+10:00</last-metadata-change-date>
+  <last-change-date>2024-11-21T17:20:55.8171931+11:00</last-change-date>
+  <last-metadata-change-date>2024-11-21T17:20:55.8171931+11:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
   <width>1000</width>
   <height>626</height>
-  <x>278</x>
-  <y>45</y>
+  <x>87</x>
+  <y>85</y>
   <open-on-startup>False</open-on-startup>
 </note>
