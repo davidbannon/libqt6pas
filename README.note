@@ -8,14 +8,14 @@
 
 <size:small>Don't edit this markdown file, its generated from the tomboy-ng note.</size:small>
 
-<bold>Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, Qt6 does not appear to be widely supported yet, Debian Trixey does.</bold>
+<bold>Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, libqt6pas does not appear to be widely supported in the distro repos yet, Debian Trixie does.</bold>
 
 
-Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
+Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 and debs for arm64 (ie RasPi) from https://github.com/davidbannon/libqt6pas/releases/latest
 
 The packages should work on distributions like Ubuntu 22.04, Fedora 36 and Debian Bookworm or later.  Note that ones like Ubuntu 20.04 for example will not work with these libraries, their official repos do not have  Qt6 or a sufficently up to date Qt6.. In practise, you need a Qt6 6.2.4 and GLibc 2.34 or later. But there are no guarantees folks ! Bookworm appears to have settled on Qt6 6.4.2
 
-Its possible that libraries for pacman and for arm and arm64 will appear here soon.
+Its possible that libraries for pacman and for armhf will appear here if requested.
 
 <bold>libqt6pas</bold> is an interface between a (Qt6) Lazarus application and the Qt6 libraries.  Not all Qt6 functions are available, only those necessary for Lazarus functionality. See https://wiki.freepascal.org/Qt6_Interface
 
@@ -129,8 +129,8 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2025-04-22T19:59:13.0290572+10:00</last-change-date>
-  <last-metadata-change-date>2025-04-22T19:59:13.0290572+10:00</last-metadata-change-date>
+  <last-change-date>2025-04-22T20:08:01.5644417+10:00</last-change-date>
+  <last-metadata-change-date>2025-04-22T20:08:01.5644417+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>

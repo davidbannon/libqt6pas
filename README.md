@@ -11,13 +11,13 @@ README
 
 
 
-**Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, Qt6 does not appear to be widely supported yet, Debian Trixey does.**
+**Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, libqt6pas does not appear to be widely supported in the distro repos yet, Debian Trixie does.**
 
 
 
 
 
-Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
+Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 and debs for arm64 (ie RasPi) from https://github.com/davidbannon/libqt6pas/releases/latest
 
 
 
@@ -25,7 +25,7 @@ The packages should work on distributions like Ubuntu 22.04, Fedora 36 and Debia
 
 
 
-Its possible that libraries for pacman and for arm and arm64 will appear here soon.
+Its possible that libraries for pacman and for armhf will appear here if requested.
 
 
 
