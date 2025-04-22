@@ -11,17 +11,9 @@ README
 
 
 
-**Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt5pas libraries. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here.**
+**Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, Qt6 does not appear to be widely supported yet, Debian Trixey does.**
 
 
-
-**At last update, the list of distros with suitable libraries include -**
-
-   * **Ubuntu 24.04 or later.**
-
-   * **Fedora 41 or later.**
-
-   * **Any (?) up to date Arch based system.**
 
 
 

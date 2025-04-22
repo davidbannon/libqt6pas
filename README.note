@@ -8,12 +8,8 @@
 
 <size:small>Don't edit this markdown file, its generated from the tomboy-ng note.</size:small>
 
-<bold>Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt5pas libraries. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here.</bold>
+<bold>Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt6pas libraries if it has them. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here. However, Qt6 does not appear to be widely supported yet, Debian Trixey does.</bold>
 
-<bold>At last update, the list of distros with suitable libraries include -</bold>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Ubuntu 24.04 or later.</bold></list-item></list></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Fedora 41 or later.</bold></list-item></list></list-item></list>
-<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Any (?) up to date Arch based system.</bold></list-item></list></list-item></list>
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
@@ -133,8 +129,8 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2025-04-22T19:50:33.6003099+10:00</last-change-date>
-  <last-metadata-change-date>2025-04-22T19:50:33.6003099+10:00</last-metadata-change-date>
+  <last-change-date>2025-04-22T19:59:13.0290572+10:00</last-change-date>
+  <last-metadata-change-date>2025-04-22T19:59:13.0290572+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
