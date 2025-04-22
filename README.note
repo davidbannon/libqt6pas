@@ -8,7 +8,12 @@
 
 <size:small>Don't edit this markdown file, its generated from the tomboy-ng note.</size:small>
 
-<bold>Please Note :</bold> As of late 2024, you probably  need these files if you are using Lazarus 3.0 or later on a machine without up to date libqt6pas files.  Over time, the various distros are catching up and provide their own version of these libraries. If you are using an Arch based Linux, Debian Trixie, latest Fedora, you don't need these files.
+<bold>Please Note : Do you actually need these libraries ?  If you are using your distro's packaged Lazarus, you should use your distro's packaged libqt5pas libraries. Only people who build Lazarus from source might need these libraries. Might ? If you use a distro that has recent versions in its repo, you should use them, not the ones here.</bold>
+
+<bold>At last update, the list of distros with suitable libraries include -</bold>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Ubuntu 24.04 or later.</bold></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Fedora 41 or later.</bold></list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr"><bold>Any (?) up to date Arch based system.</bold></list-item></list></list-item></list>
 
 Download packaged libraries (Debs, RPMs and a tar ball) for x86_64 from https://github.com/davidbannon/libqt6pas/releases/latest
 
@@ -29,9 +34,9 @@ Bug reports relating to this repository's <bold>packaging or currency</bold> sho
 <size:large><bold>Names and Numbers</bold></size:large>
 
 The main library Deb package looks a bit like this - <monospace>libqt6pas6_6.2.8-1_amd64.deb and libqt6pas6-dev_6.2.8-1_amd64.deb</monospace>
-<list><list-item dir="ltr">The package name is   libqt6pas6</list-item></list>
-<list><list-item dir="ltr">The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.</list-item></list>
-<list><list-item dir="ltr">The "_8" will indicate later release of the bindings, still with Qt6.2</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The package name is   libqt6pas6</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The "6_2" indicates its based on Qt6.2 LTS series, works fine with later Qt6 too.</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">The "_8" will indicate later release of the bindings, still with Qt6.2</list-item></list></list-item></list>
 The "-1" is the usual debian packaging release, I'll increment that if I release new packages with same library.
 
 Note that, in this format, which conforms to the way Debian is packaging Qt6, the '6' appears three times, each refering to the same thing ! I have moved over to this format instead of the one intially used here as I found the earlier one was much harder to get error free rpms. The change of formatting will require, the user, to remove ones in the old format before installing the new format. Sorry.
@@ -51,31 +56,31 @@ I now build these libraries (for x86-64) on a U20.04 VM to ensure backwards comp
 <monospace>deb http://ppa.launchpad.net/okirby/qt6-backports/ubuntu focal main</monospace>
 
 Start with a clean U2204.
-<list><list-item dir="ltr">$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</list-item></list>
-<list><list-item dir="ltr">$&gt; mkdir ~/LibQt; cd ~/LibQt</list-item></list>
-<list><list-item dir="ltr">git clone https://github.com/davidbannon/libqt6pas.git</list-item></list>
-<list><list-item dir="ltr">create a ~/.rpmmacro</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; sudo apt install qt6-base-dev alien rpm lintian vim devscripts rpmlint // bit over 400Meg</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; mkdir ~/LibQt; cd ~/LibQt</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">git clone https://github.com/davidbannon/libqt6pas.git</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">create a ~/.rpmmacro</list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">%_signature gpg</list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">%_gpg_name David Bannon</list-item></list></list-item></list>
 <list><list-item dir="ltr"><list><list-item dir="ltr">%__gpg /usr/bin/gpg</list-item></list></list-item></list>
-<list><list-item dir="ltr">and make sure the corresponding gpg key is in gpg (in my case ...617741).</list-item></list>
-<list><list-item dir="ltr">note that on U2204, I needed to set path to the gpg binary with TWO underscores, not one like other lines ??</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">and make sure the corresponding gpg key is in gpg (in my case ...617741).</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">note that on U2204, I needed to set path to the gpg binary with TWO underscores, not one like other lines ??</list-item></list></list-item></list>
 
 If already setup.
 
-<list><list-item dir="ltr">$&gt; cd ~/LibQt/libqt6pas/cbindings/scripts</list-item></list>
-<list><list-item dir="ltr">$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master if necessary</list-item></list>
-<list><list-item dir="ltr">$&gt; cd ../../</list-item></list>
-<list><list-item dir="ltr">$&gt; qmake6; make                   # wait a long time</list-item></list>
-<list><list-item dir="ltr">$&gt; cd package</list-item></list>
-<list><list-item dir="ltr">update the whatsnew file</list-item></list>
-<list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib   #  (I use the &lt;tb&gt;@&lt;*.id.au&gt; one</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; cd ~/LibQt/libqt6pas/cbindings/scripts</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; bash ./qt6update.bash           # this will update your repo directly from the official master if necessary</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; cd ../../</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; qmake6; make                   # wait a long time</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; cd package</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">update the whatsnew file</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">$&gt; EMAIL=YOU@your.email  bash ./package-lib   #  (I use the &lt;tb&gt;@&lt;*.id.au&gt; one</list-item></list></list-item></list>
 
 Then push code up to this git repo, create a new release page, assign a new (but uncreated) tag, upload the new libraries and release.
 
 <size:large><bold>Ref</bold></size:large>
-<list><list-item dir="ltr">https://opensource.com/article/18/9/how-build-rpm-packages</list-item></list>
-<list><list-item dir="ltr">https://launchpad.net/~okirby/+archive/ubuntu/qt6-backports   // get Qt6 6.2.2 on Ubuntu 20.04</list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">https://opensource.com/article/18/9/how-build-rpm-packages</list-item></list></list-item></list>
+<list><list-item dir="ltr"><list><list-item dir="ltr">https://launchpad.net/~okirby/+archive/ubuntu/qt6-backports   // get Qt6 6.2.2 on Ubuntu 20.04</list-item></list></list-item></list>
 
 
 
@@ -128,8 +133,8 @@ Now, push the changes you made to the source earlier back up to github, create a
 
 
 </note-content></text>
-  <last-change-date>2024-11-21T17:20:55.8171931+11:00</last-change-date>
-  <last-metadata-change-date>2024-11-21T17:20:55.8171931+11:00</last-metadata-change-date>
+  <last-change-date>2025-04-22T19:50:33.6003099+10:00</last-change-date>
+  <last-metadata-change-date>2025-04-22T19:50:33.6003099+10:00</last-metadata-change-date>
   <create-date>2022-11-08T13:46:34.2510486+11:00</create-date>
   <cursor-position>1</cursor-position>
   <selection-bound-position>1</selection-bound-position>
