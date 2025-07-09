@@ -1,7 +1,7 @@
 
 name: Test4Updates Qt6
 
-# Controls when the action will run. Triggers the workflow on cron like time
+# Controls when the action will run, Triggers the workflow on cron like time
 on:
   schedule:
   # This is UTC in crontab format, minutes hours etc....
